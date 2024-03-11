@@ -16,7 +16,8 @@ export default {
         figtree: ["Figtree", "sans-serif"],
       },
       backgroundImage: {
-        button: "var(--button)",       
+        button: "var(--button)",    
+        buttonrv: "var(--buttonrv)",
       },
       gridTemplateColumns: {
         '16': 'repeat(16, minmax(0, 1fr))',

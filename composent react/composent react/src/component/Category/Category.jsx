@@ -1,4 +1,4 @@
-import CardCategory from "./CardCategory"
+import CardCategory from "../Card/CardCategory"
 
 export default function Category(){
 

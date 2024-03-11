@@ -12,7 +12,9 @@
   --black:  0 0% 7%;
   --grey: 240 0% 40%;
   --blues: linear-gradient(90deg, hsl(150, 100%, 42%), hsl(240, 0%, 40%));
+  --bluesinvert: linear-gradient(90deg, hsl(150, 100%, 42%), hsl(240, 0%, 40%));
   
+  --buttonrv: var(--bluesinvert);
   --button: var(--blues);
   --text-grey: var(--grey);
   --text-white: var(--white);
