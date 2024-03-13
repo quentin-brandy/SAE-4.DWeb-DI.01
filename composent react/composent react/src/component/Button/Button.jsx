@@ -11,13 +11,6 @@ const button = cva(base, {
           "border-transparent",
           "hover:bg-buttonrv",
         ],
-        watch: [
-            "font-Figtree",
-            "bg-button",
-            "text-white",
-            "border-transparent",
-            "hover:bg-buttonrv",
-          ],
       },
       size: {
         small: ["text-xs", "py-2", "px-4" ,"md:text-base"],

@@ -13,17 +13,18 @@ export default function Footer() {
           document.getElementById('mobile').style.transform = 'translateX(100%)';
       }
     return (
-        <header className="bg-background">
-    <nav className="flex w-screen py-2 md:w-screen mb-4 md:items-center md:gap-9 px-5 md:px-10 xl:px-24 ">
-        <div className=" flex gap-2">
+        <header className="bg-transparent absolute z-50">
+    <nav className="flex w-screen py-2 md:w-screen mb-4 md:items-center md:gap-9 px-5 md:px-10 xl:px-24 bg-transparent">
+        <div className=" flex items-start">
             <img onClick={Openmenu} className=" pb-6 w-6 md:hidden" src={burgeropen} alt=""/>
-            <img className=' scale-50 md:w-20 ' src={logo} alt=""/>
+            <img className=' cursor-pointer scale-75  md:w-24 ' src={logo} alt=""/>
         </div>
+        {/* mobile */}
         <div className='flex justify-end w-full h-8 px-5 md:px-5 md:hidden'>
         <Button className="font-semibold"> TRY PARAMOUNT+</Button>
         </div>
-        <div className=" bg-black md:bg-background md:flex md:items-center md:justify-between md:relative md:w-full md:h-fit">
-            <ul className="hidden md:flex items-center  gap-5">
+        <div className=" bg-black md:bg-transparent md:flex md:items-center md:justify-between md:relative md:w-full md:h-fit">
+            <ul className="hidden md:flex items-center gap-5">
                 <li>
                     <a className="flex items-center justify-center gap-4" href="#">
                         <h3 className="text-sm font-normal text-textwhite">SHOWS</h3>
@@ -50,7 +51,7 @@ export default function Footer() {
 
   {/* <!-- mobile --> */}
 <div id="mobile" className="absolute z-10 translate-x-full w-full h-full bg-black md:hidden md:bg-background md:items-center md:justify-between md:relative md:w-full md:h-fit">
-    <ul className="md:hidden ">
+    <ul className="md:hidden">
         <li className="">
             <img onClick={Closemenu}  className="bg-black cursor-pointer" src={burgerclose} alt=""/>
         </li>
