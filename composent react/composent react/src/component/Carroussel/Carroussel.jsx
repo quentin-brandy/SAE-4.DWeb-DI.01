@@ -1,112 +1,78 @@
-import CardEp from "../Card/CardEp.jsx";
-import React, { useRef, useState } from 'react';
-import { Virtual, Navigation} from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import CarrousselBanner from "./CarrousselBanner.jsx";
+import React, { useState, useEffect } from "react";
 
-// Import Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
+const Carousel = ({ slides }) => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [timeRemaining, setTimeRemaining] = useState(5000); // Temps restant avant le changement de diapositive
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      nextSlide();
+    }, 20000); // Mettre à jour le temps restant toutes les secondes
 
-function ArrowLeftIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="m12 19-7-7 7-7" />
-      <path d="M19 12H5" />
-    </svg>
-  )
-}
+    return () => {
+      clearInterval(timer);
+    };
+  }, [currentSlide]);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      nextSlide();
+    }, timeRemaining);
 
-function ArrowRightIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="m12 5 7 7-7 7" />
-    </svg>
-  )
-}
-export default function Carrousel() {
- 
+    return () => clearTimeout(timer);
+  }, [timeRemaining, currentSlide]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide === slides.length - 1 ? 0 : prevSlide + 1));
+    setTimeRemaining(5000); // Réinitialiser le temps restant à 5 secondes pour chaque diapositive
+  };
+
+  const changeSlide = (index) => {
+    setCurrentSlide(index);
+    setTimeRemaining(5000); // Réinitialiser le temps restant à 5 secondes lorsque l'utilisateur clique sur un bouton
+  };
 
   return (
-    <>
-      <Swiper className=" bg-background md:pl-10 xl:pl-20 z-0"
-        modules={[Virtual, Navigation]}
-        navigation={true}
-        slidesPerView={2}
-        breakpoints={{
-          // when window width is >= 320px
-          800: {
-            slidesPerView: 3,
-            spaceBetween: 10
-          },
-          // when window width is >= 480px
-          1024: {
-            slidesPerView: 4,
-          },
-          // when window width is >= 640px
-          1440: {
-            slidesPerView: 5,
-          },
-          1920: {
-            slidesPerView: 6,
-          }
-        }}
-        spaceBetween={10}
-        virtual
-      >
-          <SwiperSlide>
-            <CardEp/>
-          </SwiperSlide>
-          <SwiperSlide>
-            <CardEp/>
-          </SwiperSlide>
-          <SwiperSlide>
-            <CardEp/>
-          </SwiperSlide>
-          <SwiperSlide>
-            <CardEp/>
-          </SwiperSlide>
-          <SwiperSlide>
-            <CardEp/>
-          </SwiperSlide>
-          <SwiperSlide>
-            <CardEp/>
-          </SwiperSlide>
-          <SwiperSlide>
-            <CardEp/>
-          </SwiperSlide>
-          <SwiperSlide>
-            <CardEp/>
-          </SwiperSlide>
-          <SwiperSlide>
-            <CardEp/>
-          </SwiperSlide>
-
-      </Swiper>
-    </>
+    <div className="relative z-10 w-screen">
+      <ul className="flex">
+        {slides.map((slide, index) => (
+          <li key={index} className={`${index === currentSlide ? "block" : "hidden"}`}>
+            {slide}
+          </li>
+        ))}
+      </ul>
+      <div className="absolute w-full bottom-9 pr-10 flex justify-end gap-1">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => changeSlide(index)}
+            className="h-1 w-10 bg-gray-300"
+            style={{
+              background: index === currentSlide ? "linear-gradient(to right, #4299e1 0%, #4299e1 100%)" : "linear-gradient(to right, #cbd5e0 0%, #cbd5e0 100%)",
+              backgroundSize: `${(timeRemaining / 5000) * 100}% 100%`,
+              transition: "background-size 1s linear",
+            }}
+          ></button>
+        ))}
+      </div>
+    </div>
   );
-}
+};
+
+const App = () => {
+  const slides = [
+    <CarrousselBanner key={1} />,
+    <CarrousselBanner key={2} />,
+    <CarrousselBanner key={3} />,
+    <CarrousselBanner key={4} />,
+  ];
+
+  return (
+    <div className="overflow-hidden">
+      <Carousel slides={slides} />
+    </div>
+  );
+};
+
+export default App;

@@ -17,7 +17,7 @@ const button = cva(base, {
       },
       padding: {
         try: ["py-1", "px-2"],
-        watch: ["py-4", "px-16"],
+        watch: ["py-4", "px-10"],
       },
     },
     compoundVariants: [{ intent: "try", size: "medium", padding:"try", class: "uppercase" }],
