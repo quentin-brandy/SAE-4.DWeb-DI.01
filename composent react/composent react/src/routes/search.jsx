@@ -1,6 +1,6 @@
 import SearchBar from "../component/SearchBar/SearchBar";
 
-export default function search(){
+export default function Search(){
 
     return(
       <SearchBar/>  

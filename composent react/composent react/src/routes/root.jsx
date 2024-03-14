@@ -10,9 +10,8 @@ export default function Root() {
   return (
     <>
 <NavBar/>
-<Carrousel/>
 <Outlet/> 
-
+<Footer/>
     </>
   );
 }

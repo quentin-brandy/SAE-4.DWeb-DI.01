@@ -4,6 +4,7 @@ import burgeropen from '../../assets/burgeropen.svg';
 import search from '../../assets/search.svg';
 import Button from '../Button/Button';
 import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -38,9 +39,8 @@ export default function NavBar() {
                     </a>
                 </li>
                 <li>
-                    <a className="flex items-center justify-center gap-4 " href="#">
-                        <img className=" w-7 h-7" onClick={Closemenu} src={search} alt=""/>
-                    </a>
+                    <Link className="flex items-center justify-center gap-4 "to="/show" src={search}> <img className=" w-7 h-7"   alt=""/>
+                    </Link>
                 </li>
               
             </ul>
