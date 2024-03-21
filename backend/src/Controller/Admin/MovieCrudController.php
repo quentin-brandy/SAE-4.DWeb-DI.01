@@ -8,7 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+
 
 class MovieCrudController extends AbstractCrudController
 {
@@ -18,11 +18,12 @@ class MovieCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): iterable
     {
+        date_default_timezone_set('Europe/Paris');
         yield TextField::new('name');
         yield AssociationField::new('category');
-        yield DateField::new('release_date');
-        yield TextField::new('short_desc');
-        yield TextField::new('long_desc');
+        yield TextField::new('release_date');
+        yield TextEditorField::new('short_desc');
+        yield TextEditorField::new('long_desc');
         yield TextField::new('catchphrase');
         yield TextField::new('trailer');
         yield TextField::new('vertical_url');

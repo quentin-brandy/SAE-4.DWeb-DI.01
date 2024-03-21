@@ -37,8 +37,8 @@ class Movie
     #[ORM\Column(length: 200)]
     private ?string $catchphrase = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $release_date = null;
+    #[ORM\Column(length: 15)]
+    private ?string $release_date = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $trailer = null;
@@ -141,12 +141,12 @@ class Movie
         return $this;
     }
 
-    public function getReleaseDate(): ?\DateTimeInterface
+    public function getReleaseDate(): ?string
     {
         return $this->release_date;
     }
 
-    public function setReleaseDate(\DateTimeInterface $release_date): static
+    public function setReleaseDate(string $release_date): static
     {
         $this->release_date = $release_date;
 
