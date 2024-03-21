@@ -18,7 +18,7 @@ export default function Home() {
     <NavBarAbsolute/>
 <App {...data}/>
 <h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg md:text-xl text-white">Latest Trailer</h2>
-<Sliderlast/>
+<Sliderlast {...data}/>
 <h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg md:text-xl text-white">Comedy</h2>
 <Sliders/>
 <h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg md:text-xl text-white">Drama</h2>

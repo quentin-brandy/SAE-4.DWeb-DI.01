@@ -18,7 +18,6 @@ class MovieCrudController extends AbstractCrudController
     }
     public function configureFields(string $pageName): iterable
     {
-        date_default_timezone_set('Europe/Paris');
         yield TextField::new('name');
         yield AssociationField::new('category');
         yield TextField::new('release_date');

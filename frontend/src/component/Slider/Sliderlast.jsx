@@ -24,7 +24,7 @@ function SamplePrevArrow(props) {
   );
 }
 
-export default function Sliderlast() {
+export default function Sliderlast(data) {
   const settings = {
     slidesToShow: 3,
     slidesToScroll: 3,
@@ -62,26 +62,17 @@ export default function Sliderlast() {
       }
     ]
   };
+  const test = Object.values(data);
   return (
     <div className="px-5 md:px-10 xl:px-24 relative overflow-hidden">
       <div className=" slider-container">
           <Slider {...settings}>
       
-          <div>
-            <CardTrailer />
-          </div>
-          <div>
-            <CardTrailer />
-          </div>
-          <div>
-            <CardTrailer />
-          </div>
-          <div>
-            <CardTrailer />
-          </div>
-          <div>
-            <CardTrailer />
-          </div>
+           {test.map((item, index) => (
+            <div key={index}>
+              <CardTrailer nom={item.name} trailer={item.trailer} date={item.release_date} image={item.horizontal_url} />
+            </div>
+          ))}  
           </Slider>
       </div>
     
