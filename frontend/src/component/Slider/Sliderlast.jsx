@@ -70,7 +70,7 @@ export default function Sliderlast(data) {
       
            {test.map((item, index) => (
             <div key={index}>
-              <CardTrailer nom={item.name} trailer={item.trailer} date={item.release_date} image={item.horizontal_url} />
+              <CardTrailer nom={item.name} trailer={item.trailer} date={item.release_date}/>
             </div>
           ))}  
           </Slider>

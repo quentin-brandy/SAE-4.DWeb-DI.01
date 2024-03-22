@@ -24,8 +24,10 @@ function SamplePrevArrow(props) {
   );
 }
 
-export default function Sliders() {
+export default function Sliders(data) {
+  const test = Object.values(data);
   const settings = {
+    infinite: false,
     slidesToShow: 7,
     slidesToScroll: 7,
     nextArrow: <SampleNextArrow />,
@@ -61,9 +63,11 @@ export default function Sliders() {
       <div className=" slider-container">
           <Slider {...settings}>
       
-          <div>
-            <CardEp />
-          </div>
+          {test.map((item, index) => (
+            <div key={index}>
+              <CardEp img={item.vertical_url}/>
+            </div>
+          ))}  
           <div>
             <CardEp />
           </div>

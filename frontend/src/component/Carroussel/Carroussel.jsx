@@ -61,19 +61,19 @@ const Carousel = ({ slides }) => {
   );
 };
 
-const App = () => {
+export default function App(data){
+  const test = Object.values(data);
+  console.log(test);
   const slides = [
-    <CarrousselBanner key={1} />,
-    <CarrousselBanner key={2} />,
-    <CarrousselBanner key={3} />,
-    <CarrousselBanner key={4} />,
+
   ];
 
+    test.forEach((item, index) => {
+      slides.push(<CarrousselBanner key={index} {...item} />);
+    });
   return (
     <div className="overflow-x-hidden">
       <Carousel slides={slides} />
     </div>
   );
 };
-
-export default App;

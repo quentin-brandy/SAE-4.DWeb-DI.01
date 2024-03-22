@@ -4,8 +4,9 @@ namespace App\Entity;
 
 use App\Repository\FilmALaUneRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: FilmALaUneRepository::class)]
+#[Groups(['json_film_a_la_une'])]
 class FilmALaUne
 {
     #[ORM\Id]

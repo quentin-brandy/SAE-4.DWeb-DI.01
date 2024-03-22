@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\MovieRepository;
 use App\Entity\Category;
+use App\Repository\FilmALaUneRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -30,6 +31,19 @@ class ApiController extends AbstractController
 
         // Normaliser les données et les convertir en JSON
         $data = $serializer->normalize($movies, null, ['groups' => 'json_movies']);
+
+        // Retourner les données sous forme de réponse JSON
+        $response = new JsonResponse( $data );
+        return $response;
+    }
+    #[Route('/api/film_a_la_une', name: 'app_api_film_a_la_une')]
+    public function readALaUne(FilmALaUneRepository $filmalauneRepository, SerializerInterface $serializer): JsonResponse
+    {
+        // Récupérer tous les films depuis le repository
+        $filmalaunes = $filmalauneRepository->findAll();
+
+        // Normaliser les données et les convertir en JSON
+        $data = $serializer->normalize($filmalaunes, null, ['groups' => 'json_film_a_la_une']);
 
         // Retourner les données sous forme de réponse JSON
         $response = new JsonResponse( $data );

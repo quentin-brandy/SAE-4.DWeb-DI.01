@@ -1,8 +1,7 @@
-export default function CardTrailer ({name, trailer, date, image}) {
-console.log(name);
+export default function CardTrailer ({nom, trailer, date}) {
     return(
 <div className='bg-background'>
-    <img src="/{image}" alt="" />
+    <iframe  src={trailer} frameborder="200"></iframe>
     <div className='flex flex-col items-start'>
         <div className='flex gap-2 text-xs lg:text-sm'>
             <div className='flex gap-1 text-textwhite'>
@@ -11,7 +10,7 @@ console.log(name);
             </div>
             <h6 className='text-textgrey'>{date}</h6>
         </div>
-        <h4 className='text-md font-bold text-textwhite'>{name}</h4>
+        <h4 className='text-md font-bold text-textwhite'>{nom}</h4>
     </div>
 </div>
 

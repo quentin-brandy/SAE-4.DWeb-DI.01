@@ -12,41 +12,48 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 
 #[ORM\Entity(repositoryClass: MovieRepository::class)]
-#[Groups(['json_movies' , 'json_movie'])]
+#[Groups(['json_movie'])]
 class Movie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['json_category'])]
+    #[Groups(['json_category' , 'json_movies' , 'json_film_a_la_une'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['json_category'])]
+    #[Groups(['json_category'  , 'json_movies' ,'json_film_a_la_une'])]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'movies')]
+    #[Groups(['json_movies'])]
     private Collection $category;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['json_film_a_la_une'])]
     private ?string $short_desc = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $long_desc = null;
 
     #[ORM\Column(length: 200)]
+    #[Groups(['json_film_a_la_une'])]
     private ?string $catchphrase = null;
 
     #[ORM\Column(length: 15)]
+    #[Groups(['json_movies' , 'json_film_a_la_une'])]
     private ?string $release_date = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['json_movies'])]
     private ?string $trailer = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['json_movies'])]
     private ?string $vertical_url = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['json_film_a_la_une'])]
     private ?string $horizontal_url = null;
 
     #[ORM\OneToOne(mappedBy: 'movie', cascade: ['persist', 'remove'])]
@@ -204,5 +211,10 @@ class Movie
         $this->film_a_la_une = $film_a_la_une;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }
