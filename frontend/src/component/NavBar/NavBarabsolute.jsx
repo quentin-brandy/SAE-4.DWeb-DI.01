@@ -55,13 +55,13 @@ export default function NavBar() {
         </div>
         {/* mobile */}
         <div className='flex justify-end w-full h-8 px-5 md:px-5 md:hidden'>
-        <Button className="font-semibold"> TRY PARAMOUNT+</Button>
+        <Button> TRY PARAMOUNT+</Button>
         </div>
         <div className=" bg-black md:bg-transparent md:flex md:items-center md:justify-between md:relative md:w-full md:h-fit">
             <ul className="hidden  md:flex items-center gap-5">
                 <li>
                 <Link className="flex items-center justify-center gap-4 pt-4 pb-6" to="/show">
-            <h3 className="text-xs md:text-lg font-normal text-textwhite">SHOWS</h3>
+            <h3 className="text-xs md:text-lg  text-textwhite">SHOWS</h3>
         </Link>
                 </li>
                 <li>

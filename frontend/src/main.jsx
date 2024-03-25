@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from './routes/root.jsx';
 import Search , {loader as searchLoader} from './routes/search.jsx';
 import Home , {loader as homeLoader} from './routes/home.jsx';
-import Show from './routes/show.jsx';
+import Show , {loader as ShowLoader} from './routes/show.jsx';
 import './index.css';
 
 
@@ -14,11 +14,11 @@ const router = createBrowserRouter([
     path: '/',
     element: <Home />,
      loader: homeLoader,
-    children:[
-    {
-      path: "/show",
-      element: <Show />,
-    },]
+  },
+  {
+    path: "/show",
+    element: <Show />,
+    loader: ShowLoader,
   },
   {
     path: "/search",

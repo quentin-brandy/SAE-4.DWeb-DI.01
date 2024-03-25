@@ -5,7 +5,6 @@ const button = cva(base, {
     variants: {
       intent: {
         try: [
-          "font-Figtree",
           "bg-button",
           "text-white",
           "border-transparent",

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+use App\Repository\CategoryRepository;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\MovieRepository;
 use App\Entity\Category;
@@ -69,10 +70,20 @@ class ApiController extends AbstractController
       return $response;
     }
 
-    #[Route('/api/category/{id}', name: 'app_api_category')]
-    public function readCategory(Category $mov, SerializerInterface $serializer ): Response
+    #[Route('/api/category', name: 'app_api_category')]
+    public function readCategory(CategoryRepository $cat, SerializerInterface $serializer ): Response
     {
-      $data = $serializer->normalize($mov, null, ['groups' => 'json_category']);
+        $categories = $cat->findAll();
+
+      $data = $serializer->normalize($categories, null, ['groups' => 'json_category']);
+      $response = new JsonResponse( $data );
+      return $response;
+    }
+
+    #[Route('/api/category/{id}', name: 'app_api_category_id')]
+    public function readCategoryid(Category $mov, SerializerInterface $serializer ): Response
+    {
+      $data = $serializer->normalize($mov, null, ['groups' => 'json_category_id']);
       $response = new JsonResponse( $data );
       return $response;
     }
@@ -90,5 +101,17 @@ class ApiController extends AbstractController
         $response = new JsonResponse( $data );
         return $response;
     }
+
+
+    #[Route('/api/showmovies', name: 'app_api_showmovies')]
+    public function ShowMovie(MovieRepository $movieRepository, SerializerInterface $serializer ): Response
+    {
+        $movies = $movieRepository->findAll();
+
+      $data = $serializer->normalize($movies, null, ['groups' => 'json_showmovie']);
+      $response = new JsonResponse( $data );
+      return $response;
+    }
+    
 
 }

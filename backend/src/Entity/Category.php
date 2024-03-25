@@ -9,17 +9,17 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
-#[Groups(['json_category'])]
+#[Groups(['json_category_id'])]
 class Category
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['json_movie'])]
+    #[Groups(['json_movie' , 'json_category'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(['json_movie' , 'json_movies'])]
+    #[Groups(['json_movie' , 'json_movies' , 'json_category'])]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Movie::class, mappedBy: 'category')]

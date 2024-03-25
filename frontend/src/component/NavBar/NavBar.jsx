@@ -32,18 +32,18 @@ export default function NavBar() {
         </li>
         <li className="bg-black">
             <a className="flex items-center justify-center gap-4 py-6 bg-black border-2 px-2 hover:bg-textwhite" href="">
-            <h3 className="text-xs font-normal text-textwhite hover:text-black">SIGN UP</h3>
+            <h3 className="text-xs  text-textwhite hover:text-black">SIGN UP</h3>
         </a>
         </li>
         <li>
             <a className="flex items-center justify-center gap-4 pt-4 pb-6" href="">
-            <h3 className="text-xs font-normal text-textwhite">SING IN</h3>
+            <h3 className="text-xs  text-textwhite">SING IN</h3>
         </a>
         </li>
         <li className="flex justify-center m-auto w-11/12 bg-background min-h-[0.5px]"></li>
         <li >
         <Link className="flex items-center justify-center gap-4 pt-4 pb-6" to="/show">
-            <h3 className="text-xs font-normal text-textwhite">SHOWS</h3>
+            <h3 className="text-xs  text-textwhite">SHOWS</h3>
         </Link>
         </li>
     </ul>
@@ -61,7 +61,7 @@ export default function NavBar() {
             <ul className="hidden  md:flex items-center gap-5">
                 <li>
                 <Link className="flex items-center justify-center gap-4 pt-4 pb-6" to="/show">
-            <h3 className="text-xs md:text-lg font-normal text-textwhite">SHOWS</h3>
+            <h3 className="text-xs md:text-lg text-textwhite">SHOWS</h3>
         </Link>
                 </li>
                 <li>
@@ -73,11 +73,11 @@ export default function NavBar() {
                 <ul className="hidden md:flex gap-6 mr-10 items-center">  
                     <li className="">
                     <a className="flex items-center justify-center gap-4" href="">
-                    <h3 className="text-xs md:text-lg font-normal text-textwhite">SING IN</h3>
+                    <h3 className="text-xs md:text-lg font-light text-textwhite">SING IN</h3>
                 </a>
                 </li>
                 <li className="flex items-center justify-center gap-4  ">     
-                <Button className="text-xl font-semibold"> TRY PARAMOUNT+</Button>
+                <Button className="text-xl"> TRY PARAMOUNT+</Button>
                 </li>
             </ul>
         </div>

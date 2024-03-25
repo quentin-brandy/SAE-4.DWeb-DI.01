@@ -18,11 +18,11 @@ class Movie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['json_category' , 'json_movies' , 'json_film_a_la_une' , 'json_searchmovie'])]
+    #[Groups(['json_category_id' , 'json_movies' , 'json_film_a_la_une' , 'json_searchmovie' , 'json_showmovie'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['json_category'  , 'json_movies' ,'json_film_a_la_une', 'json_searchmovie'])]
+    #[Groups(['json_category_id'  , 'json_movies' ,'json_film_a_la_une', 'json_searchmovie' , 'json_showmovie'])]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'movies')]
@@ -49,7 +49,7 @@ class Movie
     private ?string $trailer = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['json_movies'])]
+    #[Groups(['json_movies' , 'json_showmovie'])]
     private ?string $vertical_url = null;
 
     #[ORM\Column(type: Types::TEXT)]

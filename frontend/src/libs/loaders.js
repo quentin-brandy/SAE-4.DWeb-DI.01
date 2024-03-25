@@ -4,6 +4,13 @@ export async function GetMovies() {
     return data; 
     }
 
+export async function GetCategory() {
+    let answer = await fetch('http://localhost:8080/api/category');
+    let data = await answer.json();
+    return data; 
+    }
+
+
 export async function GetFilmalaUne() {
     let answer = await fetch('http://localhost:8080/api/film_a_la_une');
     let data = await answer.json();
@@ -18,6 +25,12 @@ export async function GetSearchMovies() {
 
     export async function GetMoviebySearch(inputText) {
         let answer = await fetch(`http://localhost:8080/api/searchbymovie?query=${inputText}`);
+        let data = await answer.json();
+        return data; 
+    }
+
+    export async function GetShowMovies() {
+        let answer = await fetch(`http://localhost:8080/api/showmovies`);
         let data = await answer.json();
         return data; 
     }
