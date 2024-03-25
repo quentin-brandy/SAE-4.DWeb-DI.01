@@ -8,7 +8,7 @@ const Carousel = ({ slides }) => {
   useEffect(() => {
     const timer = setInterval(() => {
       nextSlide();
-    }, 20000); // Mettre à jour le temps restant toutes les secondes
+    }, 40000); // Mettre à jour le temps restant toutes les secondes
 
     return () => {
       clearInterval(timer);

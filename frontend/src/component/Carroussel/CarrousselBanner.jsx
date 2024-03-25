@@ -3,7 +3,7 @@ export default function CarrousselBanner(data){
     return(
         <>
         <div className="w-screen flex flex-col justify-end ">
-          <img className='relative w-screen min-h-[565px] aspect-video max-h-[600px] h-full md:h-3/4 brightness-75 ' src={data.movie.horizontal_url} alt={data.movie.name} />
+          <img className='relative w-screen min-h-[565px] aspect-video max-h-[900px] h-full md:h-3/4 brightness-75 ' src={data.movie.horizontal_url} alt={data.movie.name} />
           <div className='absolute z-10 mx-5 md:mx-10 xl:mx-24 mb-10 '>
             <div className='flex flex-col gap-1'>
               <h1 className='text-textwhite uppercase font-bold text-3xl md:text-6xl'>{data.movie.name}</h1>

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use Symfony\Component\HttpFoundation\Request;
 use App\Repository\MovieRepository;
 use App\Entity\Category;
 use App\Repository\FilmALaUneRepository;
@@ -57,6 +57,17 @@ class ApiController extends AbstractController
       $response = new JsonResponse( $data );
       return $response;
     }
+    
+    #[Route('/api/searchmovies', name: 'app_api_movies')]
+    public function readSearchMovie(MovieRepository $movieRepository, SerializerInterface $serializer ): Response
+    {
+        $movies = $movieRepository->findAll();
+
+      $data = $serializer->normalize($movies, null, ['groups' => 'json_searchmovie']);
+      $response = new JsonResponse( $data );
+      return $response;
+    }
+
     #[Route('/api/category/{id}', name: 'app_api_category')]
     public function readCategory(Category $mov, SerializerInterface $serializer ): Response
     {
@@ -64,4 +75,24 @@ class ApiController extends AbstractController
       $response = new JsonResponse( $data );
       return $response;
     }
+
+    #[Route('/api/searchbymovie', name: 'app_api_search_movie', methods: ['GET'])]
+    public function searchMoviesByTitle(Request $request, MovieRepository $movieRepository, SerializerInterface $serializer): JsonResponse
+    {
+       $searchTerm = $request->query->get('query');
+      
+        if (!$searchTerm) {
+            return new JsonResponse(['error' => 'A search term is required'], Response::HTTP_BAD_REQUEST);
+        }
+
+
+        $movies = $movieRepository->findBySearchTerm($searchTerm);
+
+
+        $data = $serializer->normalize($movies, null, ['groups' => 'json_searchmovie']);
+
+        $response = new JsonResponse( $data );
+        return $response;
+    }
+
 }

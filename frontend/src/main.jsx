@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Root from './routes/root.jsx';
-import Search from './routes/search.jsx';
+import Search , {loader as searchLoader} from './routes/search.jsx';
 import Home , {loader as homeLoader} from './routes/home.jsx';
 import Show from './routes/show.jsx';
 import './index.css';
@@ -23,6 +23,7 @@ const router = createBrowserRouter([
   {
     path: "/search",
     element: <Search />,
+    loader: searchLoader,
   },
 ]);
 
