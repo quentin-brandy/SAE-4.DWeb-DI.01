@@ -12,19 +12,19 @@ export default function SearchBar (data){
     setInputMovie(Object.values(data));
   }, [data]);
 
-  let inputHandler = async (e) => {
+  const inputHandler = async (e) => {
     //convert input text to lower case
-    var lowerCase = e.target.value.toLowerCase();
+    const lowerCase = e.target.value.toLowerCase();
     setInputText(lowerCase);
-    const data = await GetMoviebySearch(inputText);
-    setInputMovie(Object.values(data));
+    const searchData = await GetMoviebySearch(lowerCase);
+    setInputMovie(Object.values(searchData));
   };
   
     return(
         <>
         <div className="flex justify-start items-center border-b-2 border-textgrey mb-4 py-10 px-5 md:px-10 xl:px-24">
     <input  onChange={inputHandler} className="w-full text-3xl bg-transparent text-textwhite border-none md:text-4xl" placeholder="Search" type="text" />
-      <Link to="/home">
+      <Link to="/">
     <img className=" w-10 cursor-pointer " src='/img//burgerclose.svg' alt=""></img>
     </Link>
 </div>

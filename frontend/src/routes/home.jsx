@@ -24,13 +24,13 @@ const romanceData = Object.values(data.movies).filter(item => {
     <>
     <NavBarAbsolute/>
 <App {...data.alaune}/>
-<h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg md:text-xl text-white">Latest Trailer</h2>
+<h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg mb-2 md:text-xl text-white">Latest Trailer</h2>
 <Sliderlast {...data.movies}/>
-<h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg md:text-xl text-white">Comedy</h2>
+<h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg mb-2 md:text-xl text-white">Comedy</h2>
 <Sliders {...animationData}/>
-<h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg md:text-xl text-white">Drama</h2>
+<h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg mb-2 md:text-xl text-white">Drama</h2>
 <Sliders  {...romanceData}/>
-<h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg md:text-xl text-white">News</h2>
+<h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg mb-2 md:text-xl text-white">News</h2>
 <Sliders/>
 <Footer/>
     </>

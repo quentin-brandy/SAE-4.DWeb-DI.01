@@ -5,7 +5,7 @@ export async function GetMovies() {
     }
 
 export async function GetFilmalaUne() {
-    let answer = await fetch('http://localhost:8080/apifilm_a_la_une');
+    let answer = await fetch('http://localhost:8080/api/film_a_la_une');
     let data = await answer.json();
     return data; 
     }

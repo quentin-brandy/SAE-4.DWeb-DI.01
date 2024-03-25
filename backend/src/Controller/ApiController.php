@@ -28,7 +28,6 @@ class ApiController extends AbstractController
     {
         // Récupérer tous les films depuis le repository
         $movies = $movieRepository->findAll();
-
         // Normaliser les données et les convertir en JSON
         $data = $serializer->normalize($movies, null, ['groups' => 'json_movies']);
 
@@ -36,6 +35,8 @@ class ApiController extends AbstractController
         $response = new JsonResponse( $data );
         return $response;
     }
+
+
     #[Route('/api/film_a_la_une', name: 'app_api_film_a_la_une')]
     public function readALaUne(FilmALaUneRepository $filmalauneRepository, SerializerInterface $serializer): JsonResponse
     {
@@ -58,8 +59,8 @@ class ApiController extends AbstractController
       return $response;
     }
     
-    #[Route('/api/searchmovies', name: 'app_api_movies')]
-    public function readSearchMovie(MovieRepository $movieRepository, SerializerInterface $serializer ): Response
+    #[Route('/api/searchmovies', name: 'app_api_searchmovies')]
+    public function SearchMovie(MovieRepository $movieRepository, SerializerInterface $serializer ): Response
     {
         $movies = $movieRepository->findAll();
 
@@ -80,17 +81,12 @@ class ApiController extends AbstractController
     public function searchMoviesByTitle(Request $request, MovieRepository $movieRepository, SerializerInterface $serializer): JsonResponse
     {
        $searchTerm = $request->query->get('query');
-      
         if (!$searchTerm) {
-            return new JsonResponse(['error' => 'A search term is required'], Response::HTTP_BAD_REQUEST);
+            $movies = $movieRepository->findAll();
         }
-
-
         $movies = $movieRepository->findBySearchTerm($searchTerm);
 
-
         $data = $serializer->normalize($movies, null, ['groups' => 'json_searchmovie']);
-
         $response = new JsonResponse( $data );
         return $response;
     }
