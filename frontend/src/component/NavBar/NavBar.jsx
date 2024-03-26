@@ -61,7 +61,7 @@ export default function NavBar() {
             <ul className="hidden  md:flex items-center gap-5">
                 <li>
                 <Link className="flex items-center justify-center gap-4 pt-4 pb-6" to="/show">
-            <h3 className="text-xs md:text-lg text-textwhite">SHOWS</h3>
+            <h3 className="text-xs md:text-base text-textwhite">SHOWS</h3>
         </Link>
                 </li>
                 <li>
@@ -73,7 +73,7 @@ export default function NavBar() {
                 <ul className="hidden md:flex gap-6 mr-10 items-center">  
                     <li className="">
                     <a className="flex items-center justify-center gap-4" href="">
-                    <h3 className="text-xs md:text-lg font-light text-textwhite">SING IN</h3>
+                    <h3 className="text-xs md:text-base font-light text-textwhite">SING IN</h3>
                 </a>
                 </li>
                 <li className="flex items-center justify-center gap-4  ">     
