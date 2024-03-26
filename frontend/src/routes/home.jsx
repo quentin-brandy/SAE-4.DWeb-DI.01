@@ -18,7 +18,7 @@ export default function Home() {
     return item.category.some(cat => cat.name === "Animation");
 });
 const romanceData = Object.values(data.movies).filter(item => {
-  return item.category.some(cat => cat.name === "Romance");
+  return item.category.some(cat => cat.name === "Fantasy");
 });
   return (
     <>

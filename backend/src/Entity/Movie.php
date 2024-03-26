@@ -49,7 +49,7 @@ class Movie
     private ?string $trailer = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['json_movies' , 'json_showmovie'])]
+    #[Groups(['json_movies' , 'json_showmovie' , 'json_category_id'])]
     private ?string $vertical_url = null;
 
     #[ORM\Column(type: Types::TEXT)]

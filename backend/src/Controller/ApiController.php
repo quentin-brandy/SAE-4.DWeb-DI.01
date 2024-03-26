@@ -80,8 +80,8 @@ class ApiController extends AbstractController
       return $response;
     }
 
-    #[Route('/api/category/{id}', name: 'app_api_category_id')]
-    public function readCategoryid(Category $mov, SerializerInterface $serializer ): Response
+    #[Route('/api/category/{name}', name: 'app_api_category_id')]
+    public function readCategoryname(Category $mov, SerializerInterface $serializer ): Response
     {
       $data = $serializer->normalize($mov, null, ['groups' => 'json_category_id']);
       $response = new JsonResponse( $data );

@@ -29,8 +29,8 @@ export async function GetSearchMovies() {
         return data; 
     }
 
-    export async function GetShowMovies() {
-        let answer = await fetch(`http://localhost:8080/api/showmovies`);
+    export async function GetShowMovies(Categoryname) {
+        let answer = await fetch(`http://localhost:8080/api/category/${Categoryname}`);
         let data = await answer.json();
         return data; 
     }

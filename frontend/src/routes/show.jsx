@@ -1,12 +1,12 @@
 import Category from "../component/Category/Category";
 import NavBar from "../component/NavBar/NavBar";
 import { GetShowMovies , GetCategory } from "../libs/loaders";
-import { useLoaderData , defer } from "react-router-dom";
-
+import { useLoaderData} from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Footer from "../component/Footer/Footer";
 export async function loader(){
-  let moviesData =  await GetShowMovies();
   let Category = await GetCategory();
-  return defer({movies:moviesData , category:Category});
+  return Category;
 }
 
 export default function Show() {
@@ -15,6 +15,8 @@ export default function Show() {
     <>
     <NavBar/>
     <Category {...data}/>
+    <Outlet/>
+    <Footer/>
     </>
   );
 }

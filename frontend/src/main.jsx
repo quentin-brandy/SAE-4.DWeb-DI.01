@@ -5,6 +5,7 @@ import Root from './routes/root.jsx';
 import Search , {loader as searchLoader} from './routes/search.jsx';
 import Home , {loader as homeLoader} from './routes/home.jsx';
 import Show , {loader as ShowLoader} from './routes/show.jsx';
+import Category , {loader as CategoryLoader} from './routes/category.jsx';
 import './index.css';
 
 
@@ -16,14 +17,21 @@ const router = createBrowserRouter([
      loader: homeLoader,
   },
   {
-    path: "/show",
-    element: <Show />,
-    loader: ShowLoader,
-  },
-  {
     path: "/search",
     element: <Search />,
     loader: searchLoader,
+  },
+  {
+    path: "/show",
+    element: <Show />,
+    loader: ShowLoader,
+    children:[
+      {
+        path: "/show/:Categoryname",
+        element: <Category />,
+        loader: CategoryLoader,
+      },
+    ]
   },
 ]);
 
