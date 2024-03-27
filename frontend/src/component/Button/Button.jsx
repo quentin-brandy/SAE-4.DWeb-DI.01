@@ -10,6 +10,10 @@ const button = cva(base, {
           "border-transparent",
           "hover:bg-buttonrv",
         ],
+        play: [
+          "text-white",
+          "border-transparent",
+        ],
       },
       size: {
         small: ["text-xs", "py-2", "px-4" ,"md:text-base"],
@@ -29,4 +33,13 @@ const button = cva(base, {
 
   export default function Button({ intent, size, padding , className, ...rest }) {
     return <button {...rest} className={button({ intent, size, padding , className })} />;
+  }
+
+  export  function PlayButton({ intent, size, padding , className, ...rest }) {
+    return (
+      <div className="flex justify-center items-center  cursor-pointer bg-button pl-5 hover:bg-buttonrv">
+        <img className='h-3' src='/img/arrow_watch.svg' alt="" />
+    <button {...rest} className={button({ intent, size, padding , className })}/>
+    </div>
+    )
   }

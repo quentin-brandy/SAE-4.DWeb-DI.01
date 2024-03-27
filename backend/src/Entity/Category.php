@@ -15,7 +15,7 @@ class Category
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['json_movie' , 'json_category'])]
+    #[Groups(['json_movie' , 'json_category' , 'json_movie_name'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]

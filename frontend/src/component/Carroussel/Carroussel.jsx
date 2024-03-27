@@ -29,7 +29,7 @@ const Carousel = ({ slides }) => {
           </li>
         ))}
       </ul>
-      <div className="absolute w-full bottom-9 pr-10 flex justify-end gap-1">
+      <div className="absolute z-40  w-full bottom-9 pr-10 flex justify-end gap-1">
         {slides.map((_, index) => (
           <button
             key={index}

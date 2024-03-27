@@ -3,9 +3,9 @@ import NavBarAbsolute from "../component/NavBar/NavBarabsolute";
 import Sliders from "../component/Slider/Slider";
 import App from "../component/Carroussel/Carroussel";
 import Sliderlast from "../component/Slider/Sliderlast";
-import { useLoaderData , defer } from "react-router-dom";
+import { useLoaderData , defer , ScrollRestoration} from "react-router-dom";
 import { GetFilmalaUne, GetMovies } from "../libs/loaders";
-
+import { Outlet } from "react-router-dom";
 export async function loader(){
   let moviesData =  await GetMovies();
   let AlaUnedata =  await GetFilmalaUne( );
@@ -32,6 +32,7 @@ const romanceData = Object.values(data.movies).filter(item => {
 <Sliders  {...romanceData}/>
 <h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg mb-2 md:text-xl text-white">News</h2>
 <Sliders/>
+<Outlet/>
 <Footer/>
     </>
   );

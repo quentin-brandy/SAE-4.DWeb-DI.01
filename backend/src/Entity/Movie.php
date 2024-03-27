@@ -18,42 +18,43 @@ class Movie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['json_category_id' , 'json_movies' , 'json_film_a_la_une' , 'json_searchmovie' , 'json_showmovie'])]
+    #[Groups(['json_category_id' , 'json_movies' , 'json_film_a_la_une' , 'json_searchmovie' , 'json_showmovie','json_movie_name' , 'json_categories'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['json_category_id'  , 'json_movies' ,'json_film_a_la_une', 'json_searchmovie' , 'json_showmovie'])]
+    #[Groups(['json_category_id'  , 'json_movies' ,'json_film_a_la_une', 'json_searchmovie' , 'json_showmovie','json_movie_name' , 'json_categories'])]
     private ?string $name = null;
 
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'movies')]
-    #[Groups(['json_movies'])]
+    #[Groups(['json_movies','json_movie_name'])]
     private Collection $category;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['json_film_a_la_une'])]
+    #[Groups(['json_film_a_la_une', 'json_movie_name'])]
     private ?string $short_desc = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['json_movie_name'])]
     private ?string $long_desc = null;
 
     #[ORM\Column(length: 200)]
-    #[Groups(['json_film_a_la_une'])]
+    #[Groups(['json_film_a_la_une' , 'json_movie_name'])]
     private ?string $catchphrase = null;
 
     #[ORM\Column(length: 15)]
-    #[Groups(['json_movies' , 'json_film_a_la_une'])]
+    #[Groups(['json_movies' , 'json_film_a_la_une' , 'json_movie_name'])]
     private ?string $release_date = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['json_movies'])]
+    #[Groups(['json_movies' ,'json_movie_name'])]
     private ?string $trailer = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['json_movies' , 'json_showmovie' , 'json_category_id'])]
+    #[Groups(['json_movies' , 'json_showmovie' , 'json_category_id' , 'json_categories'])]
     private ?string $vertical_url = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(['json_film_a_la_une', 'json_searchmovie'])]
+    #[Groups(['json_film_a_la_une', 'json_searchmovie' , 'json_movie_name'])]
     private ?string $horizontal_url = null;
 
     #[ORM\OneToOne(mappedBy: 'movie', cascade: ['persist', 'remove'])]

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import CardCategory from "../Card/CardCategory"
 
 export function Categories({name , id, onClick , isSelected}){
     const handleClick = () => {

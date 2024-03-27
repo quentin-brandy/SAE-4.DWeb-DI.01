@@ -34,3 +34,16 @@ export async function GetSearchMovies() {
         let data = await answer.json();
         return data; 
     }
+
+    export async function GetMovie(Moviename) {
+        let answer = await fetch(`http://localhost:8080/api/movies/${Moviename}`);
+        let data = await answer.json();
+        return data; 
+        }
+
+
+        export async function GetrelatedMovies(Categoryname) {
+            let answer = await fetch(`http://localhost:8080/api/categories/${Categoryname}`);
+            let data = await answer.json();
+            return data; 
+        }

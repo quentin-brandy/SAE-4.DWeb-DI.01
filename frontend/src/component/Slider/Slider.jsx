@@ -28,6 +28,7 @@ function SamplePrevArrow(props) {
 
 export default function Sliders(data) {
   const test = Object.values(data);
+  console.log(test);
   var settings = {
     infinite: true,
     slidesToShow: 9,
@@ -87,9 +88,7 @@ export default function Sliders(data) {
           <Slider {...settings}>
       
           {test.map((item, index) => (
-            <div cursor-pointer hover:scale-110 mb-0 key={index}>
-              <CardEp img={item.vertical_url}/>
-            </div>
+              <CardEp key={index} name={item.name} img={item.vertical_url}/>
           ))}  
           </Slider>
       </div>
