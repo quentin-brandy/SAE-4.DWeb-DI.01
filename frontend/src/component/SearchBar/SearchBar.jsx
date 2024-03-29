@@ -23,7 +23,7 @@ export default function SearchBar (data){
     return(
         <>
         <div className="flex justify-start items-center border-b-2 border-textgrey mb-4 py-10 px-5 md:px-10 xl:px-24">
-    <input  onChange={inputHandler} className="w-full text-3xl bg-transparent text-textwhite border-none md:text-4xl" placeholder="Search" type="text" />
+    <input  onChange={inputHandler} className="w-full text-3xl bg-transparent text-textwhite border-none focus:outline-none md:text-4xl" placeholder="Search" type="text" />
       <Link to="/">
     <img className=" w-10 cursor-pointer " src='/img//burgerclose.svg' alt=""></img>
     </Link>

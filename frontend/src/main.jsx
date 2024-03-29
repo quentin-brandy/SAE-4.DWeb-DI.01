@@ -7,6 +7,7 @@ import Home , {loader as homeLoader} from './routes/home.jsx';
 import Show , {loader as ShowLoader} from './routes/show.jsx';
 import Serie , {loader as SerieLoader} from './routes/serie.jsx'
 import Category , {loader as CategoryLoader} from './routes/category.jsx';
+import Login from './component/Log/Login.jsx';
 import './index.css';
 
 
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
     ]
   },
 ]
+  },
+  {
+    path: "/login",
+    element: <Login/>,
   },
 ]);
 

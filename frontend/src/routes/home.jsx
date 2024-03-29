@@ -32,8 +32,6 @@ const romanceData = Object.values(data.movies).filter(item => {
 <Sliders  {...romanceData}/>
 <h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg mb-2 md:text-xl text-white">News</h2>
 <Sliders/>
-<Outlet/>
-<Footer/>
     </>
   );
 }

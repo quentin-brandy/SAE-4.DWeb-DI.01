@@ -4,7 +4,8 @@ export default function CarrousselBanner(data){
         <>
         <div className="w-screen flex flex-col justify-end ">
           <img className='relative w-screen min-h-[565px] aspect-video max-h-[700px] 2xl:max-h-[900px] h-full md:h-3/4 brightness-75 ' src={data.movie.horizontal_url} alt={data.movie.name} />
-          <div className="absolute w-screen bottom-80 lg:bottom-52 xl:bottom-0 left-0 right-0 h-[40rem] 2xl:h-[50rem] bg-gradient-to-b from-transparent to-background" />
+          <div className="absolute w-screen bottom-0 lg:bottom-0 left-0 right-0 h-[20rem] 2xl:h-[50rem] bg-gradient-to-b from-transparent to-background" />
+          <div className="absolute w-screen top-0 left-0 right-0 h-72  bg-gradient-to-t from-transparent to-background" />
           <div className='absolute z-40 mx-5 md:mx-10 xl:mx-24 mb-10 '>
             <div className='flex flex-col gap-1'>
               <h1 className='text-textwhite uppercase font-bold text-3xl md:text-6xl'>{data.movie.name}</h1>
