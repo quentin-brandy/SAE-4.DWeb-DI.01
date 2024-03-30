@@ -5,7 +5,7 @@ return(
 <>
 <div className="w-screen flex flex-col justify-end">
 <img className='relative w-full min-h-[565px] aspect-video max-h-[700px] 2xl:max-h-[900px] h-full md:h-3/4' src={data.horizontal_url} alt="ncisbanner" />
-<div className="absolute w-screen bottom-24 lg:bottom-0 left-0 right-0 h-[20rem] 2xl:h-[50rem] bg-gradient-to-b from-transparent to-background" />
+<div className="absolute w-screen bottom-90 left-0 right-0 h-[10rem] 2xl:h-[50rem] bg-gradient-to-b from-transparent to-background" />
 <div className="absolute w-screen top-0 left-0 right-0 h-72  bg-gradient-to-t from-transparent to-background" />
 <div className=' absolute mx-5 md:mx-10 xl:mx-24 mb-10 '>
         <div className='flex flex-col gap-1'>
