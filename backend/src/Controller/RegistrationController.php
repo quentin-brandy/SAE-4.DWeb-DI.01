@@ -13,32 +13,30 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class RegistrationController extends AbstractController
 {
-    #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    #[Route('/register', name: 'app_register', methods: ['POST'])]
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
+        // Récupérer les données POST envoyées
+        $requestData = json_decode($request->getContent(), true);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('app_api');
+        // Vérifier si les données nécessaires sont présentes
+        if (!isset($requestData['email'], $requestData['password'])) {
+            return new Response('Email or password error', Response::HTTP_BAD_REQUEST);
         }
 
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form,
-        ]);
+        // Créer un nouvel utilisateur avec les données reçues
+        $user = new User();
+        $user->setEmail($requestData['email']);
+
+        // Hasher le mot de passe avant de l'assigner à l'utilisateur
+        $hashedPassword = $passwordHasher->hashPassword($user, $requestData['password']);
+        $user->setPassword($hashedPassword);
+
+        // Enregistrer le nouvel utilisateur dans la base de données
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        // Renvoyer une réponse indiquant que l'utilisateur a été créé avec succès
+        return new Response('User created successfully', Response::HTTP_CREATED);
     }
 }

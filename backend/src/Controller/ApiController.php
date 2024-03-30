@@ -12,6 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Movie;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ApiController extends AbstractController
 {
@@ -117,14 +118,6 @@ class ApiController extends AbstractController
     public function readMoviename(Movie $mov, SerializerInterface $serializer ): Response
     {
       $data = $serializer->normalize($mov, null, ['groups' => 'json_movie_name']);
-      $response = new JsonResponse( $data );
-      return $response;
-    }
-    #[Route('/api/categories/{id}', name: 'app_api_categories_name')]
-    public function readCategories(Category $category, SerializerInterface $serializer , $id): Response
-    {
-      $movies = $category->getMovies();
-      $data = $serializer->normalize($movies, null, ['groups' => 'json_categories']);
       $response = new JsonResponse( $data );
       return $response;
     }

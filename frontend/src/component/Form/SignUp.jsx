@@ -1,14 +1,19 @@
 import { useState } from "react";
+import { Form, useNavigate } from "react-router-dom";
+import { Createuser } from "../../libs/loaders";
 
 export default function SignUp() {
   const [isEmailInputClicked, setIsEmailInputClicked] = useState(false);
   const [isPasswordInputClicked, setIsPasswordInputClicked] = useState(false);
   const [isConfirmPasswordInputClicked, setIsConfirmPasswordInputClicked] = useState(false);
-  const [emailValue, setEmailValue] = useState("");
-  const [passwordValue, setPasswordValue] = useState("");
   const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
 
   const handleEmailInputClick = () => {
     setIsEmailInputClicked(true);
@@ -25,30 +30,23 @@ export default function SignUp() {
     setIsEmailInputClicked(false);
     setIsPasswordInputClicked(false);
     setIsConfirmPasswordInputClicked(false);
-    if (emailValue && !validateEmail(emailValue)) {
+    if (formData.email && !validateEmail(formData.email)) {
       setIsEmailValid(false);
-    } else if (emailValue === "") {
+    } else if (formData.email === "") {
       setIsEmailValid(false);
     } else {
       setIsEmailValid(true);
     }
 
-    if (passwordValue && !validatePassword(passwordValue)) {
+    if (formData.password && !validatePassword(formData.password)) {
       setIsPasswordValid(false);
-    } else if (passwordValue === "") {
+    } else if (formData.password === "") {
       setIsPasswordValid(false);
     } else {
       setIsPasswordValid(true);
     }
   };
 
-  const handleEmailChange = (e) => {
-    setEmailValue(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPasswordValue(e.target.value);
-  };
   const handleConfirmPasswordChange = (e) => {
     setConfirmPasswordValue(e.target.value);
   };
@@ -62,12 +60,39 @@ export default function SignUp() {
    console.log("test");
   };
   const validatePassword = (password) => {
-    const re = /^(?=.*\d)[A-Za-z\d]{4,}$/;
+    const re = /^.{6,}$/;
     return re.test(password);
   };
   const validateConfirmPassword = (password , confirmPassword) => {
     return password === confirmPassword;
   };
+
+
+const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+      const response = await Createuser(formData);
+      if(response.ok == true){
+      useNavigate("/home");
+      }
+      else{
+        return (
+      <p className="text-xs text-red-500">
+        An error occurred during the process. Please try again.
+      </p>
+    );
+      
+    } 
+      console.error(error);
+      // Handle error
+    }
 
   return (
     <>
@@ -78,7 +103,7 @@ export default function SignUp() {
             <h3>Step 1 of 1</h3>
           </div>
 
-          <form className="flex flex-col gap-4" method="post" action="">
+          <Form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div className="relative flex items-center">
               <input
                 onBlur={handleInputBlur}
@@ -90,13 +115,13 @@ export default function SignUp() {
                 required="required"
                 aria-required="true"
                 name="email"
-                value={emailValue}
-                onChange={handleEmailChange}
+                value={formData.email}
+                onChange={handleChange}
               />
               <label
                 htmlFor="email"
                 className={`absolute pl-4 text-background pointer-events-none opacity-70 ${
-                  emailValue !== "" ? "text-xs -top-1 transition-all ease-in-out duration-300" : ""
+                  formData.email !== "" ? "text-xs -top-1 transition-all ease-in-out duration-300" : ""
                }`}
               > Email
               </label>
@@ -116,20 +141,20 @@ export default function SignUp() {
                 required="required"
                 aria-required="true"
                 name="password"
-                value={passwordValue}
-                onChange={handlePasswordChange}
+                value={formData.password}
+                onChange={handleChange}
               />
               <label
                 htmlFor="password"
                 className={`absolute pl-4 text-background pointer-events-none opacity-70 ${
-                  passwordValue !== "" ? "text-xs -top-1 transition-all ease-in-out duration-300" : ""
+                  formData.password !== "" ? "text-xs -top-1 transition-all ease-in-out duration-300" : ""
                 }`}
               >
                 Password
               </label>
             </div>
             {!isPasswordValid && (
-              <div className="text-red-500">Password must contain at least 4 characters, including at least one digit</div>
+              <div className="text-red-500">Password must contain at least 6 characters</div>
             )}
               <div className="relative flex items-center">
               <input
@@ -148,24 +173,27 @@ export default function SignUp() {
               <label
                 htmlFor="password"
                 className={`absolute pl-4 text-background pointer-events-none opacity-70 ${
-                  passwordValue !== "" ? "text-xs -top-1 transition-all ease-in-out duration-300" : ""
+                  formData.password !== "" ? "text-xs -top-1 transition-all ease-in-out duration-300" : ""
                 }`}
               >
                 Confirm Password
               </label>
             </div>
-            {passwordValue !== confirmPasswordValue && (
+            {formData.password !== confirmPasswordValue && (
               <div className="text-red-500">Password must be the same</div>
             )}
             <p className="text-xs">
               By pressing "Continue", you confirm that you have read and agree to the <span className="text-blue-500 cursor-pointer underline"> Terms of Use</span> and acknowledge our <span className="text-blue-500 cursor-pointer underline">Privacy Policy</span>.
             </p>
-            <button type="button" aria-disabled="true"  disabled={
-    !isEmailValid || !isPasswordValid || passwordValue !== confirmPasswordValue
-  } onClick={test} className={`w-full bg-blue-500 py-2 cursor-pointer text-white font-semibold ${
-    !isEmailValid || !isPasswordValid || passwordValue !== confirmPasswordValue  ? "bg-gray-500" : ""
+            <button type="submit" aria-disabled="true"  disabled={
+    !isEmailValid || !isPasswordValid || formData.password !== confirmPasswordValue
+  }  className={`w-full bg-blue-500 py-2 cursor-pointer text-white font-semibold ${
+    !isEmailValid || !isPasswordValid || formData.password !== confirmPasswordValue  ? "bg-gray-500" : ""
   } `}> CONTINUE </button>
-          </form>
+          </Form>
+          <p className="text-xs text-white">
+             Un error as occure during the precess Ply try again .
+            </p>
         </div>
       </section>
     </>
