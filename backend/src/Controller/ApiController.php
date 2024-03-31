@@ -10,9 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Movie;
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ApiController extends AbstractController
 {
@@ -121,5 +125,31 @@ class ApiController extends AbstractController
       $response = new JsonResponse( $data );
       return $response;
     }
+    #[Route('/api/user/{email}', name: 'app_api_user' , methods: ['POST']) ]
+    public function readUser(string $email, UserRepository $userRepository , Request $request, SerializerInterface $serializer, UserPasswordHasherInterface $passwordHasher , JWTTokenManagerInterface $jwtManager): Response
+    {
+      
+      $user = $userRepository->findOneBy(['email' => $email]);
+      $test = $user->getPassword();
+      if (!$user) {
+          return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+      }
+        // Récupérer le mot de passe fourni par l'utilisateur depuis la requête
+        $requestData = json_decode($request->getContent(), true);
+        $providedPassword = $requestData['password']; // Supposons que le mot de passe soit envoyé dans la requête
 
+        if (!$passwordHasher->isPasswordValid($user, $providedPassword)) {
+          return new JsonResponse(['error' => 'Invalid password'], Response::HTTP_UNAUTHORIZED);
+      }
+             // Générer le token JWT
+    $token = $jwtManager->create($user);
+
+    // Le mot de passe fourni est valide, créer une réponse avec le token JWT
+    $data = [
+        'token' => $token,
+        'user' => $serializer->normalize($user, null, ['groups' => 'json_user']),
+    ];
+            $response = new JsonResponse($data);
+        return $response;
+    }
 }

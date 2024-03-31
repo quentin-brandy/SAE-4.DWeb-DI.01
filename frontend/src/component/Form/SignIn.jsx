@@ -1,8 +1,9 @@
 import { useState , useEffect } from "react";
-import { Form } from "react-router-dom";
 import { Verifyuser } from "../../libs/loaders";
+import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
+  const history = useNavigate();
   const [isEmailInputClicked, setIsEmailInputClicked] = useState(false);
   const [isPasswordInputClicked, setIsPasswordInputClicked] = useState(false);
   const [formData, setFormData] = useState({
@@ -25,6 +26,7 @@ export default function SignIn() {
   };
 
   const handleChange = (e) => {
+    
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -32,25 +34,17 @@ export default function SignIn() {
   };
 
   const handleSubmit = async (e) => {
-
+    e.preventDefault();
     try {
-        const payload = {
-            _username: formData.email,
-            _password: formData.password
-          };
-          console.log(formData2)
-      const response = await Verifyuser(payload);
-      console.log(response.data);
-      // Handle success
+      const data = await Verifyuser(formData);
+      localStorage.setItem("token connexion" , data.token );
+      history("/home");
     } catch (error) {
       console.error(error);
       // Handle error
     }
   };
   
-  const test = () => {
-    console.log("test");
-   };
   return (
     <>
       <section className="flex justify-center items-center px-20 w-full bg-textwhite pt-10">
@@ -60,7 +54,7 @@ export default function SignIn() {
             <h3>Step 1 of 1</h3>
           </div>
 
-          <form className="flex flex-col gap-4"  method="post" action="http://localhost:8080/login">
+          <form className="flex flex-col gap-4"  onSubmit={handleSubmit}>
             <div className="relative flex items-center">
               <input
                 onBlur={handleInputBlur}

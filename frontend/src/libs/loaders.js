@@ -55,29 +55,26 @@ export async function GetSearchMovies() {
                 });
             
                 if (!response.ok) {
-                  throw new Error('Failed to verify user');
+                  throw new Error('Failed to create user');
                 }
             
                 return response;
               } catch (error) {
-                console.error('Error verifying user:', error.message);
+                console.error('Error creating user:', error.message);
                 throw error;
               }
             }
             export async function Verifyuser(userData) {
-                try {
-                    const response = await fetch('http://localhost:8080/login', {
+              let user = userData.email;
+                    let answer = await fetch(`http://localhost:8080/api/user/${user}` , {
                       method: 'POST',
                       body: JSON.stringify(userData), // FormData contenant les données de l'utilisateur
                     });
                 
-                    if (!response.ok) {
+                    if (!answer.ok) {
                       throw new Error('Failed to verify user');
                     }
                 
-                    return response;
-                  } catch (error) {
-                    console.error('Error verifying user:', error.message);
-                    throw error;
-                  }
+                    let data = await answer.json();
+                    return data;           
                 }
