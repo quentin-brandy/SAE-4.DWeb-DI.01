@@ -125,6 +125,19 @@ class ApiController extends AbstractController
       $response = new JsonResponse( $data );
       return $response;
     }
+
+    #[Route('/api/categories/{id}', name: 'app_api_categories_name')]
+    public function readCategories(Category $category, SerializerInterface $serializer , $id): Response
+    {
+      $movies = $category->getMovies();
+      $data = $serializer->normalize($movies, null, ['groups' => 'json_categories']);
+      $response = new JsonResponse( $data );
+      return $response;
+    }
+
+
+
+
     #[Route('/api/user/{email}', name: 'app_api_user' , methods: ['POST']) ]
     public function readUser(string $email, UserRepository $userRepository , Request $request, SerializerInterface $serializer, UserPasswordHasherInterface $passwordHasher , JWTTokenManagerInterface $jwtManager): Response
     {

@@ -3,9 +3,10 @@ import { Verifyuser } from "../../libs/loaders";
 import { useNavigate } from "react-router-dom";
 
 export default function SignIn() {
-  const history = useNavigate();
+  const navigate = useNavigate();
   const [isEmailInputClicked, setIsEmailInputClicked] = useState(false);
   const [isPasswordInputClicked, setIsPasswordInputClicked] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -37,16 +38,25 @@ export default function SignIn() {
     e.preventDefault();
     try {
       const data = await Verifyuser(formData);
-      localStorage.setItem("token connexion" , data.token );
-      history("/home");
+      if (!data) {
+        setErrorMessage('Une erreur s\'est produite lors de la connexion');
+        return;
+      }
+      localStorage.setItem("token connexion", data.token);
+      navigate("/home");
     } catch (error) {
       console.error(error);
-      // Handle error
+      setErrorMessage('Une erreur s\'est produite lors de la connexion');
     }
   };
   
   return (
     <>
+     {errorMessage && (
+        <div className="text-red-500 mb-4">
+          {errorMessage}
+        </div>
+      )}
       <section className="flex justify-center items-center px-20 w-full bg-textwhite pt-10">
         <div className="max-w-96">
           <div className="flex flex-wrap gap-10 items-center pb-2 border-b-[1px] justify-between mb-10">
