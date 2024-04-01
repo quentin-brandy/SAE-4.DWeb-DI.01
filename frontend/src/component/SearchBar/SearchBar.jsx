@@ -34,7 +34,7 @@ export default function SearchBar (data){
     <div className="grid grid-cols-12 gap-4 ">
     {inputMovie.map((item, index) => (
            <a key={index} className=" col-span-6 w-full cursor-pointer hover:scale-110 md:col-span-4 lg:col-span-3 xl:col-span-2 mb-0">
-           <SearchBarCard img={item.horizontal_url} {...item}/>
+           <SearchBarCard {...item}/>
            </a>
  
           ))}  

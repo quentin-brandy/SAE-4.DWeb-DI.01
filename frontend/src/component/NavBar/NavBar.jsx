@@ -51,7 +51,9 @@ export default function NavBar() {
     <nav className="flex w-screen py-2  mb-4 md:items-center md:gap-9 px-5 md:px-10 xl:px-24 bg-transparent">
         <div className=" flex items-start">
             <img onClick={Openmenu} className=" pb-6 w-6 md:hidden" src='/img/burgeropen.svg' alt=""/>
+            <NavLink to="/">
             <img className='cursor-pointer scale-75  md:w-24 ' src='/img/cbslogo.svg' alt=""/>
+            </NavLink>
         </div>
         {/* mobile */}
         <div className='flex justify-end w-full h-8 px-5 md:px-5 md:hidden'>

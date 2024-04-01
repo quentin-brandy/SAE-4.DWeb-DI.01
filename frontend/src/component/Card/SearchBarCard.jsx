@@ -1,9 +1,10 @@
+import { Link } from "react-router-dom"
 export default function SearchBarCard (item) {
  
     return(
-        <div class="relative">
-        <img class="block" src={item.img} alt={item.name}/>
-      </div>
+        <Link to={`/${item.name}`} class="relative">
+        <img class="block" src={item.horizontal_url} alt={item.name}/>
+      </Link>
 
     )
 }
