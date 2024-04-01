@@ -9,6 +9,8 @@ import Serie , {loader as SerieLoader} from './routes/serie.jsx'
 import Category , {loader as CategoryLoader} from './routes/category.jsx';
 import Login from './component/Log/Login.jsx';
 import './index.css';
+import SignIn from './component/Form/SignIn.jsx';
+import SignUp from './component/Form/SignUp.jsx';
 
 
 
@@ -18,7 +20,7 @@ const router = createBrowserRouter([
     element: <Root />,
      children:[
       {
-        path: '/home',
+        index: true,
         element: <Home/>,
         loader: homeLoader,
       },
@@ -47,8 +49,18 @@ const router = createBrowserRouter([
 ]
   },
   {
-    path: "/login",
+    path: "/account",
     element: <Login/>,
+    children:[
+      {
+        path:"/account/signin",
+        element: <SignIn/>,
+      },
+      {
+        path:"/account/signup",
+        element: <SignUp/>,
+      },
+    ]
   },
 ]);
 

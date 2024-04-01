@@ -33,7 +33,7 @@ export default function SignIn() {
       [e.target.name]: e.target.value,
     });
   };
-
+  const day = 24 * 60 * 60 * 1000;
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -42,8 +42,12 @@ export default function SignIn() {
         setErrorMessage('Une erreur s\'est produite lors de la connexion');
         return;
       }
-      localStorage.setItem("token connexion", data.token);
-      navigate("/home");
+      cookieStore.set({
+        name: "token connexion",
+        value: data.token,
+        expires: Date.now() + day,
+      });
+      navigate("/");
     } catch (error) {
       console.error(error);
       setErrorMessage('Une erreur s\'est produite lors de la connexion');

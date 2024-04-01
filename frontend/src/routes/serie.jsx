@@ -1,10 +1,9 @@
 import SerieBanner from "../component/Serie/SerieBanner";
 import NavBar from "../component/NavBar/NavBarabsolute";
 import SerieDescription from "../component/Serie/SerieDescritpion";
-import { defer, useLoaderData} from "react-router-dom";
+import { useLoaderData} from "react-router-dom";
 import { GetMovie, GetrelatedMovies} from "../libs/loaders";
 import Sliders from "../component/Slider/Slider";
-import { Categories } from "../component/Category/Category";
 
 export async function loader({params}){
     let moviesData =  await GetMovie(params.Moviename);

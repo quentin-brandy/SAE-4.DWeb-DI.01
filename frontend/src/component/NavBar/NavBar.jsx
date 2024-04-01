@@ -1,6 +1,6 @@
 import Button from '../Button/Button';
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -25,10 +25,10 @@ export default function NavBar() {
             <img onClick={Closemenu}  className="bg-black cursor-pointer" src='/img/burgerclose.svg' alt=""/>
         </li>
         <li className="flex items-center justify-center gap-4 py-4 bg-background hover:bg-textwhite">
-            <Link to="/search">
+            <NavLink to="/search">
             <h3 className="text-xl">Search shows</h3>
             <img className=" w-10 h-10" src='/img/search.svg' alt=""/>
-        </Link>
+        </NavLink>
         </li>
         <li className="bg-black">
             <a className="flex items-center justify-center gap-4 py-6 bg-black border-2 px-2 hover:bg-textwhite" href="">
@@ -36,15 +36,15 @@ export default function NavBar() {
         </a>
         </li>
         <li>
-            <a className="flex items-center justify-center gap-4 pt-4 pb-6" href="">
+            <NavLink to="/signin" className="flex items-center justify-center gap-4 pt-4 pb-6" >
             <h3 className="text-xs  text-textwhite">SING IN</h3>
-        </a>
+        </NavLink>
         </li>
         <li className="flex justify-center m-auto w-11/12 bg-background min-h-[0.5px]"></li>
         <li >
-        <Link className="flex items-center justify-center gap-4 pt-4 pb-6" to="/show">
+        <NavLink className="flex items-center justify-center gap-4 pt-4 pb-6" to="/show">
             <h3 className="text-xs  text-textwhite">SHOWS</h3>
-        </Link>
+        </NavLink>
         </li>
     </ul>
 </div>
@@ -60,21 +60,21 @@ export default function NavBar() {
         <div className=" bg-black md:bg-transparent md:flex md:items-center md:justify-between md:relative md:w-full md:h-fit">
             <ul className="hidden  md:flex items-center gap-5">
                 <li>
-                <Link className="flex items-center justify-center gap-4 pt-4 pb-6" to="/show">
+                <NavLink className="flex items-center justify-center gap-4 pt-4 pb-6" to="/show">
             <h3 className="text-xs md:text-base text-textwhite">SHOWS</h3>
-        </Link>
+        </NavLink>
                 </li>
                 <li>
-                    <Link className="flex items-center justify-center gap-4 "to="/search" > <img className=" w-7 h-7" src='/img/search.svg'  alt=""/>
-                    </Link>
+                    <NavLink className="flex items-center justify-center gap-4 "to="/search" > <img className=" w-7 h-7" src='/img/search.svg'  alt=""/>
+                    </NavLink>
                 </li>
               
             </ul>
                 <ul className="hidden md:flex gap-6 mr-10 items-center">  
                     <li className="">
-                    <a className="flex items-center justify-center gap-4" href="">
-                    <h3 className="text-xs md:text-base font-light text-textwhite">SING IN</h3>
-                </a>
+                    <NavLink to="/signin" className="flex items-center justify-center gap-4">
+                    <h3 className="text-xs md:text-lg text-textwhite">SING IN</h3>
+                </NavLink>
                 </li>
                 <li className="flex items-center justify-center gap-4  ">     
                 <Button className="text-xl"> TRY PARAMOUNT+</Button>
