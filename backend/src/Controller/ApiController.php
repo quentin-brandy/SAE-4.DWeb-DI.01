@@ -164,7 +164,7 @@ class ApiController extends AbstractController
     }
 
     
-    #[Route('/api/user', name: 'app_api_categories_name')]
+    #[Route('/api/user', name: 'app_api_categories_user')]
     public function readUser(UserRepository $user , SerializerInterface $serializer ,  Request $request ): Response
     {
       $token = $request->headers->get('Authorization');

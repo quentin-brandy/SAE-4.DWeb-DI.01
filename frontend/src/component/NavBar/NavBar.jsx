@@ -74,7 +74,7 @@ export default function NavBar() {
             </ul>
                 <ul className="hidden md:flex gap-6 mr-10 items-center">  
                     <li className="">
-                    <NavLink to="/signin" className="flex items-center justify-center gap-4">
+                    <NavLink to="/account/signin" className="flex items-center justify-center gap-4">
                     <h3 className="text-xs md:text-lg text-textwhite">SING IN</h3>
                 </NavLink>
                 </li>

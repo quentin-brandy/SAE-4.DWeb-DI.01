@@ -20,7 +20,7 @@ export default function Account(data){
             </div>
             <div className="flex w-full justify-between border-b-[1px] pb-4">
                 <h3 className=" text-background opacity-70">Password</h3>
-                <h3>l'email</h3>
+                <h3> ••••••••••</h3>
                 <h3 className="text-blue-500 cursor-pointer">Edit Password</h3>
             </div>
             </div>
