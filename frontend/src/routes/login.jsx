@@ -1,11 +1,11 @@
-import NavBarlog from "../NavBar/NavBarlog";
+import NavBarlog from "../component/NavBar/NavBarlog";
 import { Outlet } from "react-router-dom";
-import FooterLog from "../Footer/FooterLog";
-let isSignIn= true;
+import FooterLog from "../component/Footer/FooterLog";
+
 export default function Login(){
     return(
         <>
-        <NavBarlog isSignIn={isSignIn}/>
+        <NavBarlog />
         <Outlet/>
         <FooterLog/>
         </>

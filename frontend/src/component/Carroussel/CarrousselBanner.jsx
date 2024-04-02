@@ -1,4 +1,5 @@
 import Button from '../Button/Button'
+import { Link } from 'react-router-dom'
 export default function CarrousselBanner(data){
     return(
         <>
@@ -14,7 +15,9 @@ export default function CarrousselBanner(data){
             </div>
             <div className='flex justify-between w-screen md:pr-32'>
               <div className='flex px- items-center gap-2 bg-button '>
+                <Link to={data.movie.name}>
                 <Button padding="watch" className="font-semibold  uppercase"> Watch Live</Button>
+                </Link>
               </div>
             </div>
           </div>

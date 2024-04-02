@@ -78,3 +78,23 @@ export async function GetSearchMovies() {
                     let data = await answer.json();
                     return data;           
                 }
+                export async function GetUserbyToken(token) {
+                  try {
+                    const response = await fetch(`http://localhost:8080/api/user`, {
+                      method: 'GET',
+                      headers: {
+                        'Authorization': `Bearer ${token}`
+                      }
+                    });
+                
+                    if (!response.ok) {
+                      throw new Error('Failed to fetch user data');
+                    }
+                
+                    const data = await response.json();
+                    return data;
+                  } catch (error) {
+                    console.error('Error fetching user data:', error.message);
+                    throw error;
+                  }
+                }

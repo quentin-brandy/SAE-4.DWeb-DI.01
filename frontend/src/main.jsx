@@ -7,11 +7,11 @@ import Home , {loader as homeLoader} from './routes/home.jsx';
 import Show , {loader as ShowLoader} from './routes/show.jsx';
 import Serie , {loader as SerieLoader} from './routes/serie.jsx'
 import Category , {loader as CategoryLoader} from './routes/category.jsx';
-import Login from './component/Log/Login.jsx';
+import Login from './routes/login.jsx';
 import './index.css';
 import SignIn from './component/Form/SignIn.jsx';
 import SignUp from './component/Form/SignUp.jsx';
-
+import Account , {loader as AccountLoader} from './routes/account.jsx';
 
 
 const router = createBrowserRouter([
@@ -52,6 +52,11 @@ const router = createBrowserRouter([
     path: "/account",
     element: <Login/>,
     children:[
+      {
+        index: true,
+        element: <Account/>,
+        loader: AccountLoader,
+      },
       {
         path:"/account/signin",
         element: <SignIn/>,
