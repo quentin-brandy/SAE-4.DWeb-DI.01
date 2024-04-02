@@ -68,7 +68,7 @@ export async function GetSearchMovies() {
               let user = userData.email;
                     let answer = await fetch(`http://localhost:8080/api/user/${user}` , {
                       method: 'POST',
-                      body: JSON.stringify(userData), // FormData contenant les données de l'utilisateur
+                      body: JSON.stringify(userData),
                     });
                 
                     if (!answer.ok) {
@@ -80,21 +80,39 @@ export async function GetSearchMovies() {
                 }
                 export async function GetUserbyToken(token) {
                   try {
-                    const response = await fetch(`http://localhost:8080/api/user`, {
+                    const answer = await fetch(`http://localhost:8080/api/user`, {
                       method: 'GET',
                       headers: {
                         'Authorization': `Bearer ${token}`
                       }
                     });
                 
-                    if (!response.ok) {
-                      throw new Error('Failed to fetch user data');
-                    }
-                
-                    const data = await response.json();
+                    const data = await answer.json();
                     return data;
                   } catch (error) {
                     console.error('Error fetching user data:', error.message);
                     throw error;
                   }
                 }
+                export async function Updatehistory(token , Moviename) {
+                  try {
+                    const answer = await fetch(`http://localhost:8080/api/history`, {
+                      method: 'POST',
+                      headers: {
+                        'Authorization': `${token}`
+                      },
+                      body: JSON.stringify(Moviename),
+                    });
+                
+                    const data = await answer.json();
+                    return data;
+                  } catch (error) {
+                    console.error('Error fetching user data:', error.message);
+                    throw error;
+                  }
+                }
+                export async function Resethistory(email) {
+                  let answer = await fetch(`http://localhost:8080/api/user/delhistory?query=${email}`);
+                  let data = await answer.json();
+                  return data; 
+              }

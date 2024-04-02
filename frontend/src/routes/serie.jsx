@@ -1,14 +1,17 @@
 import SerieBanner from "../component/Serie/SerieBanner";
 import NavBar from "../component/NavBar/NavBarabsolute";
 import SerieDescription from "../component/Serie/SerieDescritpion";
-import { useLoaderData} from "react-router-dom";
-import { GetMovie, GetrelatedMovies} from "../libs/loaders";
+import { useNavigate, useLoaderData} from "react-router-dom";
+import { GetMovie, GetrelatedMovies , Updatehistory} from "../libs/loaders";
 import Sliders from "../component/Slider/Slider";
 
 export async function loader({params}){
+    let datatoken = await cookieStore.get("token connexion");
     let moviesData =  await GetMovie(params.Moviename);
+    await Updatehistory(datatoken.value , params.Moviename);
     const relatedMoviesPromises = moviesData.category.map(async (item) => {
       return GetrelatedMovies(item.id);
+      
   });  
   const relatedMovies = await Promise.all(relatedMoviesPromises);
   const allRelatedMovies = relatedMovies.flat();

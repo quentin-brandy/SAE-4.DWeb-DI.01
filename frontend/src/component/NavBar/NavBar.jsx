@@ -3,6 +3,18 @@ import React, { useState } from "react";
 import { NavLink } from 'react-router-dom';
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isLog, setIsLog] = useState(false);
+    
+   let token = cookieStore.get("token connexion")
+   .then((token) => {
+     if (token) {
+       console.log(token);
+       setIsLog(true)
+     } else {
+      console.log(token);
+      setIsLog(false)
+     }
+   })
 
     function Openmenu() {
       setIsMenuOpen(true);
@@ -31,14 +43,13 @@ export default function NavBar() {
         </NavLink>
         </li>
         <li className="bg-black">
-            <a className="flex items-center justify-center gap-4 py-6 bg-black border-2 px-2 hover:bg-textwhite" href="">
-            <h3 className="text-xs  text-textwhite hover:text-black">SIGN UP</h3>
-        </a>
-        </li>
-        <li>
-            <NavLink to="/signin" className="flex items-center justify-center gap-4 pt-4 pb-6" >
+        {isLog ? (
+        <NavLink to="/account" className="text-xs w-full flex justify-center py-4 text-textwhite">PROFILE</NavLink>
+      ) : (
+        <NavLink to="/account/signin" className="flex items-center justify-center gap-4 pt-4 pb-6" >
             <h3 className="text-xs  text-textwhite">SING IN</h3>
         </NavLink>
+      )}
         </li>
         <li className="flex justify-center m-auto w-11/12 bg-background min-h-[0.5px]"></li>
         <li >
@@ -73,10 +84,12 @@ export default function NavBar() {
               
             </ul>
                 <ul className="hidden md:flex gap-6 mr-10 items-center">  
-                    <li className="">
-                    <NavLink to="/account/signin" className="flex items-center justify-center gap-4">
-                    <h3 className="text-xs md:text-lg text-textwhite">SING IN</h3>
-                </NavLink>
+                     <li className="">
+                    {isLog ? (
+        <NavLink to="/account" className="text-xs md:text-lg  text-textwhite">PROFILE</NavLink>
+      ) : (
+        <NavLink to="/account/signin" className="text-xs md:text-lg  text-textwhite">SIGN IN</NavLink>
+      )}
                 </li>
                 <li className="flex items-center justify-center gap-4  ">     
                 <Button className="text-xl"> TRY PARAMOUNT+</Button>

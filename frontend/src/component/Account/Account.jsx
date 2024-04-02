@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { Resethistory } from "../../libs/loaders";
 
 export default function Account(data){
     console.log(data);
@@ -6,6 +7,9 @@ export default function Account(data){
     const handlelogout =   () => {
         cookieStore.delete("token connexion")
         navigate("/")
+      };
+      const handlehistory =   () => {
+        Resethistory(data.email);
       };
     return(
         <>
@@ -28,7 +32,7 @@ export default function Account(data){
             <h2 className="font-semibold">Mon Historique</h2>
             <div className="flex w-full justify-between border-b-[1px] pb-4">
                 <h3 className=" text-background opacity-70">Historique</h3>
-                <h3 className="text-blue-500 cursor-pointer">Supprimez mon historique</h3>
+                <h3 onClick={handlehistory} className="text-blue-500 cursor-pointer">Supprimez mon historique</h3>
             </div>
             </div>
             <div  className="flex flex-col w-full gap-7">

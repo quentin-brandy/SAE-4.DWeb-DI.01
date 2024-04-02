@@ -1,98 +1,68 @@
 import CardEp from "../Card/CardSerie copy";
 import Slider from "react-slick";
+import { useState } from "react";
+import { useRef , useEffect} from 'react';
 
-
-function SampleNextArrow(props) {
-  const { className, onClick } = props;
-  const ClassName = `${className} before:content-['>']  flex items-center text-textwhite absolute  h-screen`;
-  return (
-    <div
-      className={ClassName}
-      onClick={onClick}
-    />
-  );
-}
-
-function SamplePrevArrow(props) {
-  const { className, onClick } = props;
-  const ClassName = `${className} flex before:content-[''] items-center justify-center text-white bg-transparent  w-10  h-full absolute left-0 top-1/2 transform -translate-y-1/2 z-10 cursor-pointer hover:bg-gray-800`;
-  return (
-    
-    
-    <div onClick={onClick}  className={ClassName}>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" ><polyline points="15 18 9 12 15 6"></polyline></svg>
-  </div>
-  
-  );
-}
 
 export default function Sliders(data) {
   const test = Object.values(data);
-  console.log(test);
-  var settings = {
-    infinite: true,
-    slidesToShow: 9,
-    slidesToScroll: 9,
-    initialSlide: 0,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-    speed: 500,
-    responsive: [
-      {
-        breakpoint: 1920,
-        settings: {
-          slidesToShow: 7,
-          slidesToScroll: 7,
-        }
-      },
-      {
-        breakpoint: 1440,
-        settings: {
-          slidesToShow: 6,
-          slidesToScroll: 6,
-        }
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 5,
-          slidesToScroll: 5,
-        }
-      },
-      {
-        breakpoint: 900,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-        }
-      },
-      {
-        breakpoint: 700,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2
-        }
-      }
-    ]
+  const containerRef = useRef(null);
+
+  const [hideLeftButton, setHideLeftButton] = useState(true);
+  const [hideRightButton, setHideRightButton] = useState(false);
+
+  const handleScrollLeft = () => {
+    const container = containerRef.current;
+    container.scrollLeft -= 400; // Changer la valeur pour ajuster la distance de défilement 
   };
+
+  const handleScrollRight = () => {
+    const container = containerRef.current;
+    container.scrollLeft += 400; // Changer la valeur pour ajuster la distance de défilement
+  };
+
+  const handleScroll = () => {
+    const container = containerRef.current;
+    const scrollLeft = container.scrollLeft;
+    const scrollWidth = container.scrollWidth;
+    const clientWidth = container.clientWidth;
+
+    // Mettre à jour l'état pour masquer ou afficher les boutons de défilement en fonction de la position du défilement
+    setHideLeftButton(scrollLeft === 0);
+    setHideRightButton(scrollWidth <= clientWidth + scrollLeft);
+  };
+
+  useEffect(() => {
+    const container = containerRef.current;
+    container.addEventListener('scroll', handleScroll);
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="px-5 md:px-10 xl:px-24  overflow-hidden">
-      <div className="slider-container">
+    <div className="relative h-full pl-5 md:pl-10 xl:pl-24">
+      <ul ref={containerRef} className="flex gap-4 snap-x overflow-x-hidden overflow-y-hidden h-full  bg-neutral rounded-box">
+        <div onClick={handleScrollLeft} className={`absolute flex items-center h-full w-10 top-1/2 left-10 transform -translate-y-1/2 cursor-pointer z-50 bg-black opacity-40 ${hideLeftButton ? 'hidden' : ''}`}>
+          <svg className="h-6 w-6 text-textwhite" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" ><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </div>
+        {test.map((item, index) => (
+          <CardEp key={index} name={item.name} img={item.vertical_url}/>
+        ))}  
+        <div onClick={handleScrollRight} className={`flex items-center absolute top-1/2 transform -translate-y-1/2 right-0 cursor-pointer h-full w-10 z-50 bg-black opacity-40 ${hideRightButton ? 'hidden' : ''}`}>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-textwhite">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </ul>
+    </div>
+  );
+}
+{/* <div className="slider-container">
           <Slider {...settings}>
       
           {test.map((item, index) => (
               <CardEp key={index} name={item.name} img={item.vertical_url}/>
           ))}  
           </Slider>
-      </div>
-    
-    </div>
-  );
-}
+      </div> */}

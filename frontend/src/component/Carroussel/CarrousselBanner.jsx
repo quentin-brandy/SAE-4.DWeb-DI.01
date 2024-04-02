@@ -1,6 +1,17 @@
 import Button from '../Button/Button'
-import { Link } from 'react-router-dom'
+import { Link , useNavigate } from 'react-router-dom'
 export default function CarrousselBanner(data){
+  const navigate = useNavigate();
+  const handleserie = () => {
+    
+    let token = cookieStore.get("token connexion")
+        .then((token) => {
+          if (token) {
+          } else {
+           navigate("/account/signin")
+          }
+        })
+  }
     return(
         <>
         <div className="w-screen flex flex-col justify-end ">
@@ -15,7 +26,7 @@ export default function CarrousselBanner(data){
             </div>
             <div className='flex justify-between w-screen md:pr-32'>
               <div className='flex px- items-center gap-2 bg-button '>
-                <Link to={data.movie.name}>
+                <Link onClick={handleserie} to={data.movie.name}>
                 <Button padding="watch" className="font-semibold  uppercase"> Watch Live</Button>
                 </Link>
               </div>

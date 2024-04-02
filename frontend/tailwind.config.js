@@ -23,8 +23,8 @@ export default {
         '16': 'repeat(16, minmax(0, 1fr))',
       },
       boxShadow: {
-        'card':  'inset 0px -63px 46px -14px rgba(0,0,0,0.1)'
-
+        'card':  'inset 0px -63px 46px -14px rgba(0,0,0,0.1)',
+        'arrow': ' inset 68px 4px 50px -6px rgba(0,0,0,0.5)'
       }
     },
   },

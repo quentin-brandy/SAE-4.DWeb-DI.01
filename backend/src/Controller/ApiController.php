@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
+use App\Entity\MovieHistory;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\MovieHistoryRepository;
 class ApiController extends AbstractController
 {
     #[Route('/api', name: 'app_api')]
@@ -144,17 +147,15 @@ class ApiController extends AbstractController
       if (!$user) {
           return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
       }
-        // Récupérer le mot de passe fourni par l'utilisateur depuis la requête
+     
         $requestData = json_decode($request->getContent(), true);
-        $providedPassword = $requestData['password']; // Supposons que le mot de passe soit envoyé dans la requête
+        $providedPassword = $requestData['password']; 
 
         if (!$passwordHasher->isPasswordValid($user, $providedPassword)) {
           return new JsonResponse(['error' => 'Invalid password'], Response::HTTP_UNAUTHORIZED);
       }
-             // Générer le token JWT
     $token = $jwtManager->create($user);
 
-    // Le mot de passe fourni est valide, créer une réponse avec le token JWT
     $data = [
         'token' => $token,
         'user' => $serializer->normalize($user, null, ['groups' => 'json_user']),
@@ -163,9 +164,10 @@ class ApiController extends AbstractController
         return $response;
     }
 
+
     
-    #[Route('/api/user', name: 'app_api_categories_user')]
-    public function readUser(UserRepository $user , SerializerInterface $serializer ,  Request $request ): Response
+    #[Route('/api/user', name: 'app_api_user_verify')]
+    public function readUser(UserRepository $user , SerializerInterface $serializer ,  Request $request ): JsonResponse
     {
       $token = $request->headers->get('Authorization');
       $token = substr($token, 7);
@@ -178,4 +180,53 @@ class ApiController extends AbstractController
       return $response;
     }
 
+    #[Route('/api/history', name: 'app_api_user_history' ,  methods: ['POST'])]
+    public function UpdateUserHistory(UserRepository $userRepository, MovieRepository $movieRepository, Request $request , EntityManagerInterface $entityManager ): Response
+    {
+      $token = $request->headers->get('Authorization');
+      $tokenParts = explode(".", $token);  
+      $tokenPayload = base64_decode($tokenParts[1]);
+      $jwtPayload = json_decode($tokenPayload);
+      $useremail = $jwtPayload->username;
+      $user = $userRepository->findOneBy(['email' => $useremail]);
+      $filmName = json_decode($request->getContent(), true);
+      $film = $movieRepository->findOneBy(['name' => $filmName]);
+  
+      if (!$film) {
+          return new JsonResponse(['error' => 'Film not found'], Response::HTTP_NOT_FOUND);
+      }
+
+      $filmHistory = new MovieHistory();
+      $filmHistory->setUser($user);
+      $filmHistory->setMovie($film);
+  
+      $entityManager->persist($filmHistory);
+      $entityManager->flush();
+  
+      return new JsonResponse(['message' => 'Film est ajouté'], Response::HTTP_CREATED);
+    }
+
+    #[Route('/api/user/delhistory', name: 'app_api_user_test')]
+    public function DellHisotry(UserRepository $userRepository, MovieHistoryRepository $filmHistoryRepository ,  EntityManagerInterface $entityManager , Request $request ): Response
+    {
+      $userEmail = $request->query->get('query');
+
+      // Récupérer l'utilisateur à partir de l'e-mail
+      $user = $userRepository->findOneBy(['email' => $userEmail]);
+  
+      if (!$user) {
+          return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+      }
+  
+      // Récupérer l'historique des films de cet utilisateur
+      $filmHistoryEntries = $filmHistoryRepository->findBy(['user' => $user]);
+  
+      // Supprimer toutes les entrées de l'historique des films de cet utilisateur
+      foreach ($filmHistoryEntries as $entry) {
+          $entityManager->remove($entry);
+      }
+      $entityManager->flush();
+  
+      return new JsonResponse(['message' => 'Film history supprimé'], Response::HTTP_OK);
+    }
 }

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { PlayButton } from '../Button/Button'
 import CardEp from '../Card/CardEp'
 export default function SerieBanner(data){
@@ -18,7 +19,9 @@ return(
     <p className='text-textwhite text-base md:text-lg pb-7'>{data.short_desc} </p>
     </div>
     <div className='flex justify-between w-screen pr-10 md:pr-32'>
+        <Link to={data.trailer}>
     <PlayButton intent="play" padding="watch" className="font-semibold  uppercase"> Watch Now</PlayButton>
+    </Link>
     <img className='max-w-36'  src='/img/cbs_original.png' alt="" />
     </div>
     </div>

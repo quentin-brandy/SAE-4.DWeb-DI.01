@@ -60,9 +60,14 @@ class Movie
     #[ORM\OneToOne(mappedBy: 'movie', cascade: ['persist', 'remove'])]
     private ?FilmALaUne $film_a_la_une = null;
 
+    #[ORM\OneToMany(targetEntity: MovieHistory::class, mappedBy: 'Movie')]
+    private Collection $movieHistories;
+
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
+        $this->movieHistories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -218,4 +223,35 @@ class Movie
     {
         return $this->name;
     }
+
+    /**
+     * @return Collection<int, MovieHistory>
+     */
+    public function getMovieHistories(): Collection
+    {
+        return $this->movieHistories;
+    }
+
+    public function addMovieHistory(MovieHistory $movieHistory): static
+    {
+        if (!$this->movieHistories->contains($movieHistory)) {
+            $this->movieHistories->add($movieHistory);
+            $movieHistory->setMovie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMovieHistory(MovieHistory $movieHistory): static
+    {
+        if ($this->movieHistories->removeElement($movieHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($movieHistory->getMovie() === $this) {
+                $movieHistory->setMovie(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

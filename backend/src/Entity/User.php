@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -34,6 +36,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    #[ORM\OneToMany(targetEntity: MovieHistory::class, mappedBy: 'user')]
+    private Collection $movieHistories;
+
+    public function __construct()
+    {
+        $this->movieHistories = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -109,4 +120,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
+
+    /**
+     * @return Collection<int, MovieHistory>
+     */
+    public function getMovieHistories(): Collection
+    {
+        return $this->movieHistories;
+    }
+
+    public function addMovieHistory(MovieHistory $movieHistory): static
+    {
+        if (!$this->movieHistories->contains($movieHistory)) {
+            $this->movieHistories->add($movieHistory);
+            $movieHistory->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMovieHistory(MovieHistory $movieHistory): static
+    {
+        if ($this->movieHistories->removeElement($movieHistory)) {
+            // set the owning side to null (unless already changed)
+            if ($movieHistory->getUser() === $this) {
+                $movieHistory->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+   
 }

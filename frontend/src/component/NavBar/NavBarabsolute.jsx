@@ -3,16 +3,16 @@ import React, { useState } from "react";
 import { NavLink } from 'react-router-dom';
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [istest, setIstest] = useState(false);
+    const [isLog, setIsLog] = useState(false);
 
    let token = cookieStore.get("token connexion")
     .then((token) => {
       if (token) {
         console.log(token);
-        setIstest(true)
+        setIsLog(true)
       } else {
        console.log(token);
-       setIstest(false)
+       setIsLog(false)
       }
     })
 
@@ -43,7 +43,7 @@ export default function NavBar() {
         </NavLink>
         </li>
         <li className="bg-black pl-10">
-        {istest ? (
+        {isLog ? (
         <NavLink to="/account" className="text-xs w-full flex justify-center py-4 text-textwhite">PROFILE</NavLink>
       ) : (
         <NavLink to="/account/signin" className="flex items-center justify-center gap-4 pt-4 pb-6" >
@@ -85,7 +85,7 @@ export default function NavBar() {
             </ul>
                 <ul className="hidden md:flex gap-6 mr-10 items-center">  
                     <li className="">
-                    {istest ? (
+                    {isLog ? (
         <NavLink to="/account" className="text-xs md:text-lg  text-textwhite">PROFILE</NavLink>
       ) : (
         <NavLink to="/account/signin" className="text-xs md:text-lg  text-textwhite">SIGN IN</NavLink>
