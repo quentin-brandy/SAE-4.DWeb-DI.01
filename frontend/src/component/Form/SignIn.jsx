@@ -1,4 +1,4 @@
-import { useState , useEffect } from "react";
+import { useState } from "react";
 import { Verifyuser } from "../../libs/loaders";
 import { useNavigate } from "react-router-dom";
 
@@ -8,10 +8,10 @@ export default function SignIn() {
   const [isPasswordInputClicked, setIsPasswordInputClicked] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
- 
+
   const handleEmailInputClick = () => {
     setIsEmailInputClicked(true);
   };
@@ -20,14 +20,12 @@ export default function SignIn() {
     setIsPasswordInputClicked(true);
   };
 
-
   const handleInputBlur = () => {
     setIsEmailInputClicked(false);
     setIsPasswordInputClicked(false);
   };
 
   const handleChange = (e) => {
-    
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -39,7 +37,7 @@ export default function SignIn() {
     try {
       const data = await Verifyuser(formData);
       if (!data) {
-        setErrorMessage('Une erreur s\'est produite lors de la connexion');
+        setErrorMessage("Une erreur s'est produite lors de la connexion");
         return;
       }
       cookieStore.set({
@@ -50,31 +48,31 @@ export default function SignIn() {
       navigate("/");
     } catch (error) {
       console.error(error);
-      setErrorMessage('Une erreur s\'est produite lors de la connexion');
+      setErrorMessage("Une erreur s'est produite lors de la connexion");
     }
   };
-  
+
   return (
     <>
-     {errorMessage && (
-        <div className=" bg-textwhite text-red-500 font-semibold text-xl flex justify-center py-4">
+      {errorMessage && (
+        <div className=" flex justify-center bg-textwhite py-4 text-xl font-semibold text-red-500">
           {errorMessage}
         </div>
       )}
-      <section className="flex justify-center items-center px-20 w-full bg-textwhite pt-10">
+      <section className="flex w-full items-center justify-center bg-textwhite px-20 pt-10">
         <div className="max-w-96">
-          <div className="flex flex-wrap gap-10 items-center pb-2 border-b-[1px] justify-between mb-10">
+          <div className="mb-10 flex flex-wrap items-center justify-between gap-10 border-b-[1px] pb-2">
             <h1 className="text-xl font-semibold">Connexion to CBS Account</h1>
             <h3>Step 1 of 1</h3>
           </div>
 
-          <form className="flex flex-col gap-4"  onSubmit={handleSubmit}>
+          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
             <div className="relative flex items-center">
               <input
                 onBlur={handleInputBlur}
                 onClick={handleEmailInputClick}
-                className={`w-full p-4 border-[1px] focus:border-blue-500 focus:outline-none ${
-                  isEmailInputClicked  ? "border-blue-500" : "border-black"
+                className={`w-full border-[1px] p-4 focus:border-blue-500 focus:outline-none ${
+                  isEmailInputClicked ? "border-blue-500" : "border-black"
                 }`}
                 type="text"
                 required="required"
@@ -85,10 +83,14 @@ export default function SignIn() {
               />
               <label
                 htmlFor="email"
-                className={`absolute pl-4 text-background pointer-events-none opacity-70 ${
-                    formData.email !== "" ? "text-xs -top-1 transition-all ease-in-out duration-300" : ""
-               }`}
-              > Email
+                className={`pointer-events-none absolute pl-4 text-background opacity-70 ${
+                  formData.email !== ""
+                    ? "-top-1 text-xs transition-all duration-300 ease-in-out"
+                    : ""
+                }`}
+              >
+                {" "}
+                Email
               </label>
             </div>
 
@@ -96,7 +98,7 @@ export default function SignIn() {
               <input
                 onBlur={handleInputBlur}
                 onClick={handlePasswordInputClick}
-                className={`w-full p-4 border-[1px] focus:border-blue-500 focus:outline-none ${
+                className={`w-full border-[1px] p-4 focus:border-blue-500 focus:outline-none ${
                   isPasswordInputClicked ? "border-blue-500" : "border-black"
                 }`}
                 type="password"
@@ -108,17 +110,36 @@ export default function SignIn() {
               />
               <label
                 htmlFor="password"
-                className={`absolute pl-4 text-background pointer-events-none opacity-70 ${
-                    formData.password !== "" ? "text-xs -top-1 transition-all ease-in-out duration-300" : ""
+                className={`pointer-events-none absolute pl-4 text-background opacity-70 ${
+                  formData.password !== ""
+                    ? "-top-1 text-xs transition-all duration-300 ease-in-out"
+                    : ""
                 }`}
               >
                 Password
               </label>
             </div>
             <p className="text-xs">
-              By pressing "Continue", you confirm that you have read and agree to the <span className="text-blue-500 cursor-pointer underline"> Terms of Use</span> and acknowledge our <span className="text-blue-500 cursor-pointer underline">Privacy Policy</span>.
+              By pressing "Continue", you confirm that you have read and agree
+              to the{" "}
+              <span className="cursor-pointer text-blue-500 underline">
+                {" "}
+                Terms of Use
+              </span>{" "}
+              and acknowledge our{" "}
+              <span className="cursor-pointer text-blue-500 underline">
+                Privacy Policy
+              </span>
+              .
             </p>
-            <button type="submit" aria-disabled="true"  className={`w-full bg-blue-500 py-2 cursor-pointer text-white font-semibold `}> LOG IN </button>
+            <button
+              type="submit"
+              aria-disabled="true"
+              className={`w-full cursor-pointer bg-blue-500 py-2 font-semibold text-white `}
+            >
+              {" "}
+              LOG IN{" "}
+            </button>
           </form>
         </div>
       </section>

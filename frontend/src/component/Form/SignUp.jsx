@@ -12,10 +12,9 @@ export default function SignUp() {
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
-
 
   const handleEmailInputClick = () => {
     setIsEmailInputClicked(true);
@@ -53,24 +52,23 @@ export default function SignUp() {
     setConfirmPasswordValue(e.target.value);
   };
 
-
   const validateEmail = (email) => {
-    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   };
   const test = () => {
-   console.log("test");
+    console.log("test");
   };
   const validatePassword = (password) => {
     const re = /^.{6,}$/;
     return re.test(password);
   };
-  const validateConfirmPassword = (password , confirmPassword) => {
+  const validateConfirmPassword = (password, confirmPassword) => {
     return password === confirmPassword;
   };
 
-
-const handleChange = (e) => {
+  const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -79,27 +77,27 @@ const handleChange = (e) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
+    try {
       const response = await Createuser(formData);
-      if(response.ok == true){
+      if (response.ok == true) {
         navigate("/account/signin");
-      }} catch (error) {
-        console.error(error);
-        setErrorMessage('Une erreur s\'est produite lors de l\'inscription');
       }
-      
-    } 
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Une erreur s'est produite lors de l'inscription");
+    }
+  };
 
   return (
     <>
-     {errorMessage && (
-        <div className=" bg-textwhite text-red-500 font-semibold text-xl flex justify-center py-4">
+      {errorMessage && (
+        <div className=" flex justify-center bg-textwhite py-4 text-xl font-semibold text-red-500">
           {errorMessage}
         </div>
       )}
-      <section className="flex justify-center items-center px-20 w-full bg-textwhite pt-10">
+      <section className="flex w-full items-center justify-center bg-textwhite px-20 pt-10">
         <div className="max-w-96">
-          <div className="flex flex-wrap gap-10 items-center pb-2 border-b-[1px] justify-between mb-10">
+          <div className="mb-10 flex flex-wrap items-center justify-between gap-10 border-b-[1px] pb-2">
             <h1 className="text-xl font-semibold">Create a CBS Account</h1>
             <h3>Step 1 of 1</h3>
           </div>
@@ -109,8 +107,10 @@ const handleChange = (e) => {
               <input
                 onBlur={handleInputBlur}
                 onClick={handleEmailInputClick}
-                className={`w-full p-4 border-[1px] focus:border-blue-500 focus:outline-none ${
-                  isEmailInputClicked && !isEmailValid ? "border-blue-500" : "border-black"
+                className={`w-full border-[1px] p-4 focus:border-blue-500 focus:outline-none ${
+                  isEmailInputClicked && !isEmailValid
+                    ? "border-blue-500"
+                    : "border-black"
                 }`}
                 type="text"
                 required="required"
@@ -121,10 +121,14 @@ const handleChange = (e) => {
               />
               <label
                 htmlFor="email"
-                className={`absolute pl-4 text-background pointer-events-none opacity-70 ${
-                  formData.email !== "" ? "text-xs -top-1 transition-all ease-in-out duration-300" : ""
-               }`}
-              > Email
+                className={`pointer-events-none absolute pl-4 text-background opacity-70 ${
+                  formData.email !== ""
+                    ? "-top-1 text-xs transition-all duration-300 ease-in-out"
+                    : ""
+                }`}
+              >
+                {" "}
+                Email
               </label>
             </div>
             {!isEmailValid && (
@@ -135,8 +139,10 @@ const handleChange = (e) => {
               <input
                 onBlur={handleInputBlur}
                 onClick={handlePasswordInputClick}
-                className={`w-full p-4 border-[1px] focus:border-blue-500 focus:outline-none ${
-                  isPasswordInputClicked && !isPasswordValid ? "border-blue-500" : "border-black"
+                className={`w-full border-[1px] p-4 focus:border-blue-500 focus:outline-none ${
+                  isPasswordInputClicked && !isPasswordValid
+                    ? "border-blue-500"
+                    : "border-black"
                 }`}
                 type="password"
                 required="required"
@@ -147,22 +153,28 @@ const handleChange = (e) => {
               />
               <label
                 htmlFor="password"
-                className={`absolute pl-4 text-background pointer-events-none opacity-70 ${
-                  formData.password !== "" ? "text-xs -top-1 transition-all ease-in-out duration-300" : ""
+                className={`pointer-events-none absolute pl-4 text-background opacity-70 ${
+                  formData.password !== ""
+                    ? "-top-1 text-xs transition-all duration-300 ease-in-out"
+                    : ""
                 }`}
               >
                 Password
               </label>
             </div>
             {!isPasswordValid && (
-              <div className="text-red-500">Password must contain at least 6 characters</div>
+              <div className="text-red-500">
+                Password must contain at least 6 characters
+              </div>
             )}
-              <div className="relative flex items-center">
+            <div className="relative flex items-center">
               <input
                 onBlur={handleInputBlur}
                 onClick={handleConfirmPasswordInputClick}
-                className={`w-full p-4 border-[1px] focus:border-blue-500 focus:outline-none ${
-                  isPasswordInputClicked && !isPasswordValid ? "border-blue-500" : "border-black"
+                className={`w-full border-[1px] p-4 focus:border-blue-500 focus:outline-none ${
+                  isPasswordInputClicked && !isPasswordValid
+                    ? "border-blue-500"
+                    : "border-black"
                 }`}
                 type="password"
                 required="required"
@@ -173,8 +185,10 @@ const handleChange = (e) => {
               />
               <label
                 htmlFor="password"
-                className={`absolute pl-4 text-background pointer-events-none opacity-70 ${
-                  formData.password !== "" ? "text-xs -top-1 transition-all ease-in-out duration-300" : ""
+                className={`pointer-events-none absolute pl-4 text-background opacity-70 ${
+                  formData.password !== ""
+                    ? "-top-1 text-xs transition-all duration-300 ease-in-out"
+                    : ""
                 }`}
               >
                 Confirm Password
@@ -184,17 +198,41 @@ const handleChange = (e) => {
               <div className="text-red-500">Password must be the same</div>
             )}
             <p className="text-xs">
-              By pressing "Continue", you confirm that you have read and agree to the <span className="text-blue-500 cursor-pointer underline"> Terms of Use</span> and acknowledge our <span className="text-blue-500 cursor-pointer underline">Privacy Policy</span>.
+              By pressing "Continue", you confirm that you have read and agree
+              to the{" "}
+              <span className="cursor-pointer text-blue-500 underline">
+                {" "}
+                Terms of Use
+              </span>{" "}
+              and acknowledge our{" "}
+              <span className="cursor-pointer text-blue-500 underline">
+                Privacy Policy
+              </span>
+              .
             </p>
-            <button type="submit" aria-disabled="true"  disabled={
-    !isEmailValid || !isPasswordValid || formData.password !== confirmPasswordValue
-  }  className={`w-full bg-blue-500 py-2 cursor-pointer text-white font-semibold ${
-    !isEmailValid || !isPasswordValid || formData.password !== confirmPasswordValue  ? "bg-gray-500" : ""
-  } `}> CONTINUE </button>
+            <button
+              type="submit"
+              aria-disabled="true"
+              disabled={
+                !isEmailValid ||
+                !isPasswordValid ||
+                formData.password !== confirmPasswordValue
+              }
+              className={`w-full cursor-pointer bg-blue-500 py-2 font-semibold text-white ${
+                !isEmailValid ||
+                !isPasswordValid ||
+                formData.password !== confirmPasswordValue
+                  ? "bg-gray-500"
+                  : ""
+              } `}
+            >
+              {" "}
+              CONTINUE{" "}
+            </button>
           </Form>
           <p className="text-xs text-white">
-             Un error as occure during the precess Ply try again .
-            </p>
+            Un error as occure during the precess Ply try again .
+          </p>
         </div>
       </section>
     </>
