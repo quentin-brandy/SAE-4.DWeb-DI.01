@@ -30,16 +30,24 @@ const romanceData = Object.values(data.movies).filter(item => {
 });
   return (
     <>
-    <NavBarAbsolute/>
-<App {...data.alaune}/>
-<h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg mb-2 md:text-xl text-white">Latest Trailer</h2>
-<Sliderlast {...data.movies}/>
-<h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg mb-2 md:text-xl text-white">Comedy</h2>
-<Sliders {...animationData}/>
-<h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg mb-2 md:text-xl text-white">Drama</h2>
-<Sliders  {...romanceData}/>
-<h2 className="px-5 md:px-10 xl:px-24 mt-10 text-lg mb-2 md:text-xl text-white">News</h2>
-<Sliders/>
+      <NavBarAbsolute />
+      <App {...data.alaune} />
+      <h2 className="mb-2 mt-10 px-5 text-lg text-white md:px-10 md:text-xl xl:px-24">
+        Latest Trailer
+      </h2>
+      <Sliderlast {...data.movies} />
+      <h2 className="mb-2 mt-10 px-5 text-lg text-white md:px-10 md:text-xl xl:px-24">
+        Comedy
+      </h2>
+      <Sliders {...animationData} />
+      <h2 className="mb-2 mt-10 px-5 text-lg text-white md:px-10 md:text-xl xl:px-24">
+        Drama
+      </h2>
+      <Sliders {...romanceData} />
+      <h2 className="mb-2 mt-10 px-5 text-lg text-white md:px-10 md:text-xl xl:px-24">
+        News
+      </h2>
+      <Sliders />
     </>
   );
 }
