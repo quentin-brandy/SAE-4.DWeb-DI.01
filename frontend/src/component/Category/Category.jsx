@@ -28,7 +28,7 @@ export default function Category(data) {
   let data2 = Object.values(data);
   return (
     <>
-      <ul className="mx-5 flex w-full flex-wrap gap-10 border-t-2 border-gray-500 py-4 text-sm text-textgrey md:mx-10 xl:mx-24">
+      <ul className=" mx-5 flex w-full flex-wrap gap-10 border-t-2 border-gray-500 py-4 text-sm text-textgrey md:mx-10 xl:mx-24">
         {data2.map((item) => (
           <Categories
             onClick={handleCategoryClick}

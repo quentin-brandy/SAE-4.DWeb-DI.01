@@ -107,14 +107,113 @@ else{
     }
     
     #[Route('/api/searchmovies', name: 'app_api_searchmovies')]
-    public function SearchMovie(MovieRepository $movieRepository, SerializerInterface $serializer ): Response
+    public function SearchMovies(MovieRepository $movieRepository, SerializerInterface $serializer , Request $request , UserRepository $userRepository): JsonResponse
     {
-        $movies = $movieRepository->findAll();
+      $token = $request->cookies->get('jwt_token');
 
-      $data = $serializer->normalize($movies, null, ['groups' => 'json_searchmovie']);
-      $response = new JsonResponse( $data );
-      return $response;
+      // Vérifier que le cookie existe
+      if (!$token) {
+        {
+          $movies = $movieRepository->findAll();
+          $moviesHistory = [];
+          foreach ($movies as $movie) {
+              $movieData = $serializer->normalize($movie, null, ['groups' => 'json_searchmovie']);
+              $movieData['Seen'] = false; // Set seenByUser to null
+              $moviesHistory[] = $movieData;
+          }
+          $response = new JsonResponse( $moviesHistory );
+          return $response;
+      }
+      }
+else{
+        $tokenParts = explode(".", $token);  
+        $tokenPayload = base64_decode($tokenParts[1]);
+        $jwtPayload = json_decode($tokenPayload);
+        $useremail = $jwtPayload->username;
+        $user = $userRepository->findOneBy(['email' => $useremail]);
+        $filmHistory = $user ? $user->getMovieHistories()->toArray() : [];
+  
+  
+        $movies = $movieRepository->findAll();
+  
+        $moviesHistory = [];
+        foreach ($movies as $movie) {
+            // Vérifier si le film se trouve dans l'historique des films de l'utilisateur
+            $seenByUser = false;
+            foreach ($filmHistory as $history) {
+                if ($history->getMovie() === $movie) {
+                    $seenByUser = true;
+                    break;
+                }
+                else{
+                  $seenByUser = false;
+                }
+            }
+  
+          $movieData = $serializer->normalize($movie, null, ['groups' => 'json_searchmovie']);
+          $movieData['Seen'] = $seenByUser;
+          $moviesHistory[] = $movieData;
+        }
+  
+          $response = new JsonResponse( $moviesHistory );
+          return $response;
+}
     }
+
+
+    #[Route('/api/searchbymovie', name: 'app_api_search_movie', methods: ['GET'])]
+public function searchMoviesByTitle(Request $request, MovieRepository $movieRepository, SerializerInterface $serializer, UserRepository $userRepository): JsonResponse
+{
+    $searchTerm = $request->query->get('query');
+    if (!$searchTerm) {
+        $movies = $movieRepository->findAll();
+    } else {
+        $movies = $movieRepository->findBySearchTerm($searchTerm);
+    }
+
+    $token = $request->cookies->get('jwt_token');
+    $moviesHistory = [];
+
+    // Vérifier que le cookie existe
+    if ($token) {
+        $tokenParts = explode(".", $token);
+        $tokenPayload = base64_decode($tokenParts[1]);
+        $jwtPayload = json_decode($tokenPayload);
+        $useremail = $jwtPayload->username;
+        $user = $userRepository->findOneBy(['email' => $useremail]);
+        $filmHistory = $user ? $user->getMovieHistories()->toArray() : [];
+
+        foreach ($movies as $movie) {
+            // Vérifier si le film se trouve dans l'historique des films de l'utilisateur
+            $seenByUser = false;
+            foreach ($filmHistory as $history) {
+                if ($history->getMovie() === $movie) {
+                    $seenByUser = true;
+                    break;
+                } else {
+                    $seenByUser = false;
+                }
+            }
+
+            $movieData = $serializer->normalize($movie, null, ['groups' => 'json_searchmovie']);
+            $movieData['Seen'] = $seenByUser;
+            $moviesHistory[] = $movieData;
+        }
+    } else {
+        // Si aucun cookie JWT n'est présent, on ne fournit pas d'informations sur les films vus par l'utilisateur
+        foreach ($movies as $movie) {
+            $movieData = $serializer->normalize($movie, null, ['groups' => 'json_searchmovie']);
+            $movieData['Seen'] = false; // Set seenByUser to false
+            $moviesHistory[] = $movieData;
+        }
+    }
+
+    $response = new JsonResponse($moviesHistory);
+    return $response;
+}
+
+
+
 
     #[Route('/api/category', name: 'app_api_category')]
     public function readCategory(CategoryRepository $cat, SerializerInterface $serializer ): Response
@@ -126,27 +225,59 @@ else{
       return $response;
     }
 
+
+
+
+
+
     #[Route('/api/category/{name}', name: 'app_api_category_id')]
-    public function readCategoryname(Category $mov, SerializerInterface $serializer ): Response
-    {
-      $data = $serializer->normalize($mov, null, ['groups' => 'json_category_id']);
-      $response = new JsonResponse( $data );
-      return $response;
-    }
+public function readCategoryname(Category $category, SerializerInterface $serializer, MovieRepository $movieRepository, Request $request, UserRepository $userRepository): JsonResponse
+{
+    $token = $request->cookies->get('jwt_token');
 
-    #[Route('/api/searchbymovie', name: 'app_api_search_movie', methods: ['GET'])]
-    public function searchMoviesByTitle(Request $request, MovieRepository $movieRepository, SerializerInterface $serializer): JsonResponse
-    {
-       $searchTerm = $request->query->get('query');
-        if (!$searchTerm) {
-            $movies = $movieRepository->findAll();
+    // Vérifier que le cookie existe
+    if (!$token) {
+        $movies = $category->getMovies();
+        $moviesHistory = [];
+        foreach ($movies as $movie) {
+            $movieData = $serializer->normalize($movie, null, ['groups' => 'json_movies']);
+            $movieData['Seen'] = false; // Set seenByUser to null
+            $moviesHistory[] = $movieData;
         }
-        $movies = $movieRepository->findBySearchTerm($searchTerm);
+        $response = new JsonResponse($moviesHistory);
+        return $response;
+    } else {
+        $tokenParts = explode(".", $token);
+        $tokenPayload = base64_decode($tokenParts[1]);
+        $jwtPayload = json_decode($tokenPayload);
+        $useremail = $jwtPayload->username;
+        $user = $userRepository->findOneBy(['email' => $useremail]);
+        $filmHistory = $user ? $user->getMovieHistories()->toArray() : [];
 
-        $data = $serializer->normalize($movies, null, ['groups' => 'json_searchmovie']);
-        $response = new JsonResponse( $data );
+        $movies = $category->getMovies();
+        $moviesHistory = [];
+        foreach ($movies as $movie) {
+            // Vérifier si le film se trouve dans l'historique des films de l'utilisateur
+            $seenByUser = false;
+            foreach ($filmHistory as $history) {
+                if ($history->getMovie() === $movie) {
+                    $seenByUser = true;
+                    break;
+                } else {
+                    $seenByUser = false;
+                }
+            }
+
+            $movieData = $serializer->normalize($movie, null, ['groups' => 'json_movies']);
+            $movieData['Seen'] = $seenByUser;
+            $moviesHistory[] = $movieData;
+        }
+
+        $response = new JsonResponse($moviesHistory);
         return $response;
     }
+}
+
 
 
     #[Route('/api/showmovies', name: 'app_api_showmovies')]

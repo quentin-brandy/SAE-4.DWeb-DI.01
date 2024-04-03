@@ -8,6 +8,7 @@ export async function loader({ params }) {
 }
 export default function Category() {
   const data = useLoaderData();
+  console.log(data);
   return (
     <>
       <MoviesCategories {...data} />

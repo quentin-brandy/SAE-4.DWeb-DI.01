@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer class="bg-background text-textgrey">
+    <footer class="absolute w-full bottom-100 bg-background text-textgrey">
       <div class="flex flex-col items-center justify-center gap-8 pt-3 lg:hidden lg:opacity-0">
         <img src="/img/cbslogo.svg" alt="logo cbs" />
         <div>

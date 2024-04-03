@@ -17,7 +17,6 @@ export default function Show() {
       <NavBar user={data.user}/>
       <Category {...data.Category} />
       <Outlet />
-      <Footer />
     </>
   );
 }

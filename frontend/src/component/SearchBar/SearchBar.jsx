@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { GetMoviebySearch } from "../../libs/loaders.js";
 
 export default function SearchBar(data) {
+  console.log(data);
   const [inputText, setInputText] = useState("");
   const [inputMovie, setInputMovie] = useState([]);
 
@@ -37,7 +38,7 @@ export default function SearchBar(data) {
         </Link>
       </div>
 
-      <section className=" px-5 md:px-10 xl:px-24">
+      <section className="pb-32 px-5 md:px-10 xl:px-24">
         <h2 className="mb-4 text-lg text-textwhite md:text-xl">
           Tous les films
         </h2>

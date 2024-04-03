@@ -2,7 +2,7 @@ import CardEp from "../Card/CardSerie copy";
 import { useRef, useEffect, useState } from "react";
 
 export default function Sliders(data) {
-  const test = Object.values(data);
+  const datamovie =  Object.values(data);
   const containerRef = useRef(null);
   const [hideLeftButton, setHideLeftButton] = useState(true);
   const [hideRightButton, setHideRightButton] = useState(false);
@@ -59,7 +59,7 @@ export default function Sliders(data) {
             <polyline points="15 18 9 12 15 6"></polyline>
           </svg>
         </div>
-        {test.map((item, index) => (
+        {datamovie.map((item, index) => (
           <CardEp
             key={index}
             name={item.name}

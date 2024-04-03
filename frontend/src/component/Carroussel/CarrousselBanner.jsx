@@ -1,14 +1,21 @@
 import Button from "../Button/Button";
 import { Link, useNavigate } from "react-router-dom";
+import { GetUserbyToken } from "../../libs/loaders";
 export default function CarrousselBanner(data) {
   const navigate = useNavigate();
+
   const handleserie = () => {
-    let token = cookieStore.get("token connexion").then((token) => {
-      if (token) {
-      } else {
-        navigate("/account/signin");
-      }
-    });
+    let user = GetUserbyToken();
+   
+      user.then((value) => {
+        if (value == "no") {
+          navigate("/account/signin");
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
   return (
     <>
@@ -36,7 +43,6 @@ export default function CarrousselBanner(data) {
             <div className="px- flex items-center gap-2 bg-button ">
               <Link onClick={handleserie} to={data.movie.name}>
                 <Button padding="watch" className="font-semibold  uppercase">
-                  {" "}
                   Watch Live
                 </Button>
               </Link>
