@@ -4,7 +4,6 @@ import { useRef, useEffect, useState } from "react";
 export default function Sliders(data) {
   const test = Object.values(data);
   const containerRef = useRef(null);
-
   const [hideLeftButton, setHideLeftButton] = useState(true);
   const [hideRightButton, setHideRightButton] = useState(false);
 

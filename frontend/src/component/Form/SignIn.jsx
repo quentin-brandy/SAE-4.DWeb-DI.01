@@ -31,21 +31,18 @@ export default function SignIn() {
       [e.target.name]: e.target.value,
     });
   };
-  const day = 24 * 60 * 60 * 1000;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await Verifyuser(formData);
-      if (!data) {
-        setErrorMessage("Une erreur s'est produite lors de la connexion");
-        return;
+     let data = await Verifyuser(formData);
+      console.log(data)
+      if (data === "ok") {
+        navigate("/");
       }
-      cookieStore.set({
-        name: "token connexion",
-        value: data.token,
-        expires: Date.now() + day,
-      });
-      navigate("/");
+      else{
+        setErrorMessage("Une erreur s'est produite lors de la connexion");
+      }
     } catch (error) {
       console.error(error);
       setErrorMessage("Une erreur s'est produite lors de la connexion");

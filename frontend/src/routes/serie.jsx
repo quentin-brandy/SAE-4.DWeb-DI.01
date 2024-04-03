@@ -6,9 +6,8 @@ import { GetMovie, GetrelatedMovies, Updatehistory } from "../libs/loaders";
 import Sliders from "../component/Slider/Slider";
 
 export async function loader({ params }) {
-  let datatoken = await cookieStore.get("token connexion");
   let moviesData = await GetMovie(params.Moviename);
-  await Updatehistory(datatoken.value, params.Moviename);
+  await Updatehistory(params.Moviename);
   const relatedMoviesPromises = moviesData.category.map(async (item) => {
     return GetrelatedMovies(item.id);
   });

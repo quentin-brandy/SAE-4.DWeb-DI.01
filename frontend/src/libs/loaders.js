@@ -1,10 +1,8 @@
 export async function GetMovies() {
-  let answer = await fetch("http://localhost:8080/api/movies");
-  let data = await answer.json();
-  return data;
-}
-export async function GetUserMovies(token) {
-  let answer = await fetch(`http://localhost:8080/api/movies?token=${token}`);
+  let answer = await fetch("http://localhost:8080/api/movies", {
+    method: "GET",
+    credentials: "include",
+  });
   let data = await answer.json();
   return data;
 }
@@ -59,7 +57,7 @@ export async function Createuser(userData) {
   try {
     const response = await fetch("http://localhost:8080/register", {
       method: "POST",
-      body: JSON.stringify(userData), 
+      body: JSON.stringify(userData),
     });
 
     if (!response.ok) {
@@ -77,38 +75,43 @@ export async function Verifyuser(userData) {
   let answer = await fetch(`http://localhost:8080/api/user/${user}`, {
     method: "POST",
     body: JSON.stringify(userData),
+    credentials: "include",
+  });
+  if (answer.ok) {
+    return "ok";
+  } else {
+    return "no";
+  }
+}
+
+export async function LogoutUser() {
+  let answer = await fetch(`http://localhost:8080/api/user/logout`);
+  if (answer.ok) {
+    return "ok";
+  } else {
+    return "error";
+  }
+}
+
+export async function GetUserbyToken() {
+  const answer = await fetch(`http://localhost:8080/api/user`, {
+    method: "GET",
+    credentials: "include",
   });
 
-  if (!answer.ok) {
-    throw new Error("Failed to verify user");
-  }
-
-  let data = await answer.json();
-  return data;
-}
-export async function GetUserbyToken(token) {
-  try {
-    const answer = await fetch(`http://localhost:8080/api/user`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
+  if (answer.ok) {
     const data = await answer.json();
     return data;
-  } catch (error) {
-    console.error("Error fetching user data:", error.message);
-    throw error;
+  } else {
+    return "no";
   }
 }
-export async function Updatehistory(token, Moviename) {
+
+export async function Updatehistory(Moviename) {
   try {
     const answer = await fetch(`http://localhost:8080/api/history`, {
       method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      credentials: "include",
       body: JSON.stringify(Moviename),
     });
 
@@ -123,6 +126,10 @@ export async function Resethistory(email) {
   let answer = await fetch(
     `http://localhost:8080/api/user/delhistory?query=${email}`,
   );
-  let data = await answer.json();
-  return data;
+  if (answer.ok) {
+    const data = await answer.json();
+    return data;
+  } else {
+    return "error";
+  }
 }

@@ -3,7 +3,7 @@ import { GetUserbyToken } from "../libs/loaders";
 import { useLoaderData } from "react-router-dom";
 export async function loader() {
   let data = await cookieStore.get("token connexion");
-  let MoviesData = await GetUserbyToken(data.value);
+  let MoviesData = await GetUserbyToken();
   return MoviesData;
 }
 

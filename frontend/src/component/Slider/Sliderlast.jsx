@@ -40,7 +40,7 @@ export default function Sliderslast(data) {
     <div className="relative h-full pl-5 md:pl-10 xl:pl-24">
     <ul
       ref={containerRef}
-      className="bg-neutral rounded-box flex h-full snap-x gap-4 overflow-x-hidden overflow-y-hidden"
+      className="bg-neutral rounded-box flex h-full snap-x gap-10 overflow-x-hidden overflow-y-hidden"
     >
       <div
         onClick={handleScrollLeft}
@@ -50,7 +50,7 @@ export default function Sliderslast(data) {
           className="h-6 w-6 text-textwhite"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          fill=""
+          fill="none"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
@@ -59,7 +59,6 @@ export default function Sliderslast(data) {
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </div>
-      
            {test.map((item, index) => (
             <div key={index}>
               <CardTrailer nom={item.name} trailer={item.trailer} date={item.release_date}/>
@@ -67,7 +66,7 @@ export default function Sliderslast(data) {
           ))}  
           <div
           onClick={handleScrollRight}
-          className={`absolute right-0 top-1/2 z-50 flex h-full w-10 -translate-y-1/2 transform cursor-pointer items-center bg-black opacity-40 ${hideRightButton ? "hidden" : ""}`}
+          className={`absolute right-0 top-1/2 z-50 flex h-full w-10 -translate-y-1/2 transform cursor-pointer items-center bg-black opacity-60 ${hideRightButton ? "hidden" : ""}`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

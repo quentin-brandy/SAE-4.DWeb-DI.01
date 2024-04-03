@@ -1,15 +1,22 @@
 import { useNavigate } from "react-router-dom";
 import { Resethistory } from "../../libs/loaders";
+import { useState } from "react";
+import { LogoutUser } from "../../libs/loaders";
 
 export default function Account(data) {
-  console.log(data);
+    const [isDelete, setisDelete]= useState(null);
   const navigate = useNavigate();
   const handlelogout = () => {
-    cookieStore.delete("token connexion");
+    document.cookie = 'jwt_token=; path=/; domain=localhost; expires=Thu, 01 Jan 1970 00:00:00 GMT;';
     navigate("/");
   };
   const handlehistory = () => {
-    Resethistory(data.email);
+    let history = Resethistory(data.email);
+    if (history == "error"){
+        setisDelete("Une erreur s'est produite durant la supréssion")
+    }else{
+        setisDelete(null) 
+    }
   };
   return (
     <>
@@ -40,6 +47,9 @@ export default function Account(data) {
             >
               Supprimez mon historique
             </h3>
+            {isDelete && (
+         <h3 className=" text-background opacity-70">{isDelete}</h3>
+          )}
           </div>
         </div>
         <div className="flex w-full flex-col gap-7">

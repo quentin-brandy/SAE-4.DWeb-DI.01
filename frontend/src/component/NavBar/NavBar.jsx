@@ -1,20 +1,9 @@
 import Button from "../Button/Button";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-export default function NavBar() {
+export default function NavBar({user}) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLog, setIsLog] = useState(false);
-
-  let token = cookieStore.get("token connexion").then((token) => {
-    if (token) {
-      console.log(token);
-      setIsLog(true);
-    } else {
-      console.log(token);
-      setIsLog(false);
-    }
-  });
-
+ 
   function Openmenu() {
     setIsMenuOpen(true);
     document.getElementById("header").classList.add("h-screen"); // Ajoute la classe pour que le header prenne 100vh
@@ -53,7 +42,7 @@ export default function NavBar() {
             </NavLink>
           </li>
           <li className="bg-black">
-            {isLog ? (
+            {user != "no" ? (
               <NavLink
                 to="/account"
                 className="flex w-full justify-center py-4 text-xs text-textwhite"
@@ -115,14 +104,13 @@ export default function NavBar() {
                 className="flex items-center justify-center gap-4 "
                 to="/search"
               >
-                {" "}
                 <img className=" h-7 w-7" src="/img/search.svg" alt="" />
               </NavLink>
             </li>
           </ul>
           <ul className="mr-10 hidden items-center gap-6 md:flex">
             <li className="">
-              {isLog ? (
+              {user != "no" ? (
                 <NavLink
                   to="/account"
                   className="text-xs text-textwhite  md:text-lg"

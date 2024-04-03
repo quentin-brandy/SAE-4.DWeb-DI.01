@@ -12,12 +12,11 @@ use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Movie;
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 use App\Entity\MovieHistory;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\MovieHistoryRepository;
@@ -35,18 +34,22 @@ class ApiController extends AbstractController
     #[Route('/api/movies', name: 'app_api_movies')]
     public function readMovies(MovieRepository $movieRepository, SerializerInterface $serializer , Request $request , UserRepository $userRepository): JsonResponse
     {
-      $token = $request->get('token');
-      if($token == null){
-        $movies = $movieRepository->findAll();
-        $moviesHistory = [];
-        foreach ($movies as $movie) {
-            $movieData = $serializer->normalize($movie, null, ['groups' => 'json_movies']);
-            $movieData['Seen'] = false; // Set seenByUser to null
-            $moviesHistory[] = $movieData;
-        }
-        $response = new JsonResponse( $moviesHistory );
-        return $response;
-    }
+      $token = $request->cookies->get('jwt_token');
+
+      // Vérifier que le cookie existe
+      if (!$token) {
+        {
+          $movies = $movieRepository->findAll();
+          $moviesHistory = [];
+          foreach ($movies as $movie) {
+              $movieData = $serializer->normalize($movie, null, ['groups' => 'json_movies']);
+              $movieData['Seen'] = false; // Set seenByUser to null
+              $moviesHistory[] = $movieData;
+          }
+          $response = new JsonResponse( $moviesHistory );
+          return $response;
+      }
+      }
 else{
         $tokenParts = explode(".", $token);  
         $tokenPayload = base64_decode($tokenParts[1]);
@@ -81,44 +84,6 @@ else{
           return $response;
 }
     }
-    #[Route('/api/movies/user', name: 'app_api_user_movies')]
-    public function readUserMovies(MovieRepository $movieRepository, SerializerInterface $serializer , Request $request , UserRepository $userRepository): JsonResponse
-    {
-      $token = $request->headers->get('token');
-      $tokenParts = explode(".", $token);  
-      $tokenPayload = base64_decode($tokenParts[1]);
-      $jwtPayload = json_decode($tokenPayload);
-      $useremail = $jwtPayload->username;
-      $user = $userRepository->findOneBy(['email' => $useremail]);
-      $filmHistory = $user ? $user->getMovieHistories()->toArray() : [];
-
-
-      $movies = $movieRepository->findAll();
-
-      $moviesWithHistory = [];
-      foreach ($movies as $movie) {
-          // Vérifier si le film se trouve dans l'historique des films de l'utilisateur
-          $seenByUser = false;
-          foreach ($filmHistory as $history) {
-              if ($history->getMovie() === $movie) {
-                  $seenByUser = true;
-                  break;
-              }
-              else{
-                $seenByUser = false;
-              }
-          }
-
-  
-        $movieData = $serializer->normalize($movie, null, ['groups' => 'json_movies']);
-        $movieData['seenByUser'] = $seenByUser;
-        $moviesWithHistory[] = $movieData;
-      }
-
-        $response = new JsonResponse( $moviesWithHistory );
-        return $response;
-   
-  }
     #[Route('/api/film_a_la_une', name: 'app_api_film_a_la_une')]
     public function readALaUne(FilmALaUneRepository $filmalauneRepository, SerializerInterface $serializer): JsonResponse
     {
@@ -212,7 +177,7 @@ else{
     }
 
 
-    #[Route('/api/user/{email}', name: 'app_api_user' , methods: ['POST']) ]
+    #[Route('/api/user/{email}', name: 'app_api_user_login' , methods: ['POST']) ]
     public function readUsermdp(string $email, UserRepository $userRepository , Request $request, SerializerInterface $serializer, UserPasswordHasherInterface $passwordHasher , JWTTokenManagerInterface $jwtManager): Response
     {
       
@@ -229,21 +194,43 @@ else{
       }
     $token = $jwtManager->create($user);
 
-    $data = [
-        'token' => $token,
-        'user' => $serializer->normalize($user, null, ['groups' => 'json_user']),
-    ];
-            $response = new JsonResponse($data);
+    $cookie = new Cookie('jwt_token', $token, strtotime('+1 day'), '/', null, false, false);
+
+    // Crée une réponse vide avec le cookie attaché
+    $response = new Response();
+    $response->headers->setCookie($cookie);
+
         return $response;
     }
 
 
-    
+    #[Route('/api/user/logout', name: 'app_api_user_logout' , methods: ['GET']) ]
+    public function UserLogout(): Response
+    {
+  
+
+    $cookie = new Cookie('jwt_token', "", 0, '/', null, false, false);
+
+    // Crée une réponse vide avec le cookie attaché
+    $response = new Response();
+    $response->headers->setCookie($cookie);
+
+        return $response;
+    }
+
+
+ 
     #[Route('/api/user', name: 'app_api_user_verify')]
     public function readUser(UserRepository $user , SerializerInterface $serializer ,  Request $request ): JsonResponse
     {
-      $token = $request->headers->get('Authorization');
-      $token = substr($token, 7);
+
+      $token = $request->cookies->get('jwt_token');
+
+      // Vérifier que le cookie existe
+      if (!$token) {
+          return new JsonResponse(['error' => 'JWT cookie not found'], Response::HTTP_UNAUTHORIZED);
+      }
+  
       $tokenParts = explode(".", $token);  
       $tokenPayload = base64_decode($tokenParts[1]);
       $jwtPayload = json_decode($tokenPayload);
@@ -256,7 +243,13 @@ else{
     #[Route('/api/history', name: 'app_api_user_history' ,  methods: ['POST'])]
     public function UpdateUserHistory(UserRepository $userRepository, MovieRepository $movieRepository, Request $request , EntityManagerInterface $entityManager ): Response
 {
-  $token = $request->headers->get('Authorization');
+  $token = $request->cookies->get('jwt_token');
+
+  // Vérifier que le cookie existe
+  if (!$token) {
+      return new JsonResponse(['error' => 'JWT cookie not found'], Response::HTTP_UNAUTHORIZED);
+  }
+
   $tokenParts = explode(".", $token);  
   $tokenPayload = base64_decode($tokenParts[1]);
   $jwtPayload = json_decode($tokenPayload);
@@ -287,6 +280,9 @@ else{
 
   return new JsonResponse(['message' => 'Film est ajouté à l\'historique'], Response::HTTP_CREATED);
 }
+
+
+
     #[Route('/api/user/delhistory', name: 'app_api_user_test')]
     public function DellHisotry(UserRepository $userRepository, MovieHistoryRepository $filmHistoryRepository ,  EntityManagerInterface $entityManager , Request $request ): Response
     {

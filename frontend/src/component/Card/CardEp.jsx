@@ -1,7 +1,7 @@
 export default function CardTrailer({ nom, trailer, date }) {
   return (
     <div className="bg-background">
-      <iframe src={trailer} frameborder="200"></iframe>
+      <iframe className="rounded-md " src={trailer} frameborder="700px"></iframe>
       <div className="flex flex-col items-start">
         <div className="flex gap-2 text-xs lg:text-sm">
           <div className="flex gap-1 text-textwhite">
