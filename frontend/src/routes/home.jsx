@@ -3,11 +3,19 @@ import NavBarAbsolute from "../component/NavBar/NavBarabsolute";
 import Sliders from "../component/Slider/Slider";
 import App from "../component/Carroussel/Carroussel";
 import Sliderlast from "../component/Slider/Sliderlast";
-import { useLoaderData , defer , ScrollRestoration} from "react-router-dom";
-import { GetFilmalaUne, GetMovies } from "../libs/loaders";
-import { Outlet } from "react-router-dom";
+import { useLoaderData , defer } from "react-router-dom";
+import { GetFilmalaUne, GetMovies , GetUserMovies } from "../libs/loaders";
 export async function loader(){
-  let moviesData =  await GetMovies();
+  let moviesData
+  let user = await cookieStore.get("token connexion");
+  console.log(user);
+  if(user == null){
+     moviesData =  await GetMovies();
+  }
+  else{
+   moviesData =  await GetUserMovies(user.value);
+  }
+
   let AlaUnedata =  await GetFilmalaUne( );
   return defer({movies:moviesData , alaune:AlaUnedata});
 }

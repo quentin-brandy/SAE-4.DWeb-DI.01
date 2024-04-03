@@ -43,11 +43,11 @@ export default function Sliders(data) {
   return (
     <div className="relative h-full pl-5 md:pl-10 xl:pl-24">
       <ul ref={containerRef} className="flex gap-4 snap-x overflow-x-hidden overflow-y-hidden h-full  bg-neutral rounded-box">
-        <div onClick={handleScrollLeft} className={`absolute flex items-center h-full w-10 top-1/2 left-10 transform -translate-y-1/2 cursor-pointer z-50 bg-black opacity-40 ${hideLeftButton ? 'hidden' : ''}`}>
+        <div onClick={handleScrollLeft} className={`absolute flex items-center h-full w-10 top-1/2  transform -translate-y-1/2 cursor-pointer z-50 bg-black opacity-40 ${hideLeftButton ? 'hidden' : ''}`}>
           <svg className="h-6 w-6 text-textwhite" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" ><polyline points="15 18 9 12 15 6"></polyline></svg>
         </div>
         {test.map((item, index) => (
-          <CardEp key={index} name={item.name} img={item.vertical_url}/>
+          <CardEp key={index} name={item.name} img={item.vertical_url} seen={item.Seen}/>
         ))}  
         <div onClick={handleScrollRight} className={`flex items-center absolute top-1/2 transform -translate-y-1/2 right-0 cursor-pointer h-full w-10 z-50 bg-black opacity-40 ${hideRightButton ? 'hidden' : ''}`}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-textwhite">
@@ -58,11 +58,3 @@ export default function Sliders(data) {
     </div>
   );
 }
-{/* <div className="slider-container">
-          <Slider {...settings}>
-      
-          {test.map((item, index) => (
-              <CardEp key={index} name={item.name} img={item.vertical_url}/>
-          ))}  
-          </Slider>
-      </div> */}

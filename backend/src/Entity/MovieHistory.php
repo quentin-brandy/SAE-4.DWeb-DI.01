@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\MovieHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: MovieHistoryRepository::class)]
 class MovieHistory
@@ -19,6 +20,7 @@ class MovieHistory
 
     #[ORM\ManyToOne(inversedBy: 'movieHistories')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups([ 'json_movies' ])]
     private ?Movie $Movie = null;
 
     public function getId(): ?int

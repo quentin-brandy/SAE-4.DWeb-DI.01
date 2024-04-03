@@ -11,12 +11,9 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class SecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_login' )]
-    public function login(Request $request , AuthenticationUtils $authenticationUtils): Response
+    public function login( AuthenticationUtils $authenticationUtils): Response
     {
-        $requestData = json_decode($request->getContent(), true);
-
-     
-
+        
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();

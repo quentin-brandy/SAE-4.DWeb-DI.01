@@ -3,7 +3,11 @@ export async function GetMovies() {
     let data = await answer.json();
     return data; 
     }
-
+    export async function GetUserMovies(token) {
+      let answer = await fetch(`http://localhost:8080/api/movies?token=${token}`);
+      let data = await answer.json();
+      return data; 
+      }
 export async function GetCategory() {
     let answer = await fetch('http://localhost:8080/api/category');
     let data = await answer.json();
@@ -99,7 +103,7 @@ export async function GetSearchMovies() {
                     const answer = await fetch(`http://localhost:8080/api/history`, {
                       method: 'POST',
                       headers: {
-                        'Authorization': `${token}`
+                        'Authorization': `Bearer ${token}`
                       },
                       body: JSON.stringify(Moviename),
                     });

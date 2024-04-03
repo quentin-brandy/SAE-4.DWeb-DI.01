@@ -33,19 +33,92 @@ class ApiController extends AbstractController
     
     
     #[Route('/api/movies', name: 'app_api_movies')]
-    public function readMovies(MovieRepository $movieRepository, SerializerInterface $serializer): JsonResponse
+    public function readMovies(MovieRepository $movieRepository, SerializerInterface $serializer , Request $request , UserRepository $userRepository): JsonResponse
     {
-        // Récupérer tous les films depuis le repository
+      $token = $request->get('token');
+      if($token == null){
         $movies = $movieRepository->findAll();
-        // Normaliser les données et les convertir en JSON
-        $data = $serializer->normalize($movies, null, ['groups' => 'json_movies']);
-
-        // Retourner les données sous forme de réponse JSON
-        $response = new JsonResponse( $data );
+        $moviesHistory = [];
+        foreach ($movies as $movie) {
+            $movieData = $serializer->normalize($movie, null, ['groups' => 'json_movies']);
+            $movieData['Seen'] = false; // Set seenByUser to null
+            $moviesHistory[] = $movieData;
+        }
+        $response = new JsonResponse( $moviesHistory );
         return $response;
     }
+else{
+        $tokenParts = explode(".", $token);  
+        $tokenPayload = base64_decode($tokenParts[1]);
+        $jwtPayload = json_decode($tokenPayload);
+        $useremail = $jwtPayload->username;
+        $user = $userRepository->findOneBy(['email' => $useremail]);
+        $filmHistory = $user ? $user->getMovieHistories()->toArray() : [];
+  
+  
+        $movies = $movieRepository->findAll();
+  
+        $moviesHistory = [];
+        foreach ($movies as $movie) {
+            // Vérifier si le film se trouve dans l'historique des films de l'utilisateur
+            $seenByUser = false;
+            foreach ($filmHistory as $history) {
+                if ($history->getMovie() === $movie) {
+                    $seenByUser = true;
+                    break;
+                }
+                else{
+                  $seenByUser = false;
+                }
+            }
+  
+          $movieData = $serializer->normalize($movie, null, ['groups' => 'json_movies']);
+          $movieData['Seen'] = $seenByUser;
+          $moviesHistory[] = $movieData;
+        }
+  
+          $response = new JsonResponse( $moviesHistory );
+          return $response;
+}
+    }
+    #[Route('/api/movies/user', name: 'app_api_user_movies')]
+    public function readUserMovies(MovieRepository $movieRepository, SerializerInterface $serializer , Request $request , UserRepository $userRepository): JsonResponse
+    {
+      $token = $request->headers->get('token');
+      $tokenParts = explode(".", $token);  
+      $tokenPayload = base64_decode($tokenParts[1]);
+      $jwtPayload = json_decode($tokenPayload);
+      $useremail = $jwtPayload->username;
+      $user = $userRepository->findOneBy(['email' => $useremail]);
+      $filmHistory = $user ? $user->getMovieHistories()->toArray() : [];
 
 
+      $movies = $movieRepository->findAll();
+
+      $moviesWithHistory = [];
+      foreach ($movies as $movie) {
+          // Vérifier si le film se trouve dans l'historique des films de l'utilisateur
+          $seenByUser = false;
+          foreach ($filmHistory as $history) {
+              if ($history->getMovie() === $movie) {
+                  $seenByUser = true;
+                  break;
+              }
+              else{
+                $seenByUser = false;
+              }
+          }
+
+  
+        $movieData = $serializer->normalize($movie, null, ['groups' => 'json_movies']);
+        $movieData['seenByUser'] = $seenByUser;
+        $moviesWithHistory[] = $movieData;
+      }
+
+        $response = new JsonResponse( $moviesWithHistory );
+        return $response;
+   
+  }
     #[Route('/api/film_a_la_une', name: 'app_api_film_a_la_une')]
     public function readALaUne(FilmALaUneRepository $filmalauneRepository, SerializerInterface $serializer): JsonResponse
     {
@@ -182,30 +255,38 @@ class ApiController extends AbstractController
 
     #[Route('/api/history', name: 'app_api_user_history' ,  methods: ['POST'])]
     public function UpdateUserHistory(UserRepository $userRepository, MovieRepository $movieRepository, Request $request , EntityManagerInterface $entityManager ): Response
-    {
-      $token = $request->headers->get('Authorization');
-      $tokenParts = explode(".", $token);  
-      $tokenPayload = base64_decode($tokenParts[1]);
-      $jwtPayload = json_decode($tokenPayload);
-      $useremail = $jwtPayload->username;
-      $user = $userRepository->findOneBy(['email' => $useremail]);
-      $filmName = json_decode($request->getContent(), true);
-      $film = $movieRepository->findOneBy(['name' => $filmName]);
-  
-      if (!$film) {
-          return new JsonResponse(['error' => 'Film not found'], Response::HTTP_NOT_FOUND);
-      }
+{
+  $token = $request->headers->get('Authorization');
+  $tokenParts = explode(".", $token);  
+  $tokenPayload = base64_decode($tokenParts[1]);
+  $jwtPayload = json_decode($tokenPayload);
+  $useremail = $jwtPayload->username;
+  $user = $userRepository->findOneBy(['email' => $useremail]);
+  $filmName = json_decode($request->getContent(), true);
+  $film = $movieRepository->findOneBy(['name' => $filmName]);
 
-      $filmHistory = new MovieHistory();
-      $filmHistory->setUser($user);
-      $filmHistory->setMovie($film);
-  
-      $entityManager->persist($filmHistory);
-      $entityManager->flush();
-  
-      return new JsonResponse(['message' => 'Film est ajouté'], Response::HTTP_CREATED);
-    }
+  if (!$film) {
+      return new JsonResponse(['error' => 'Film not found'], Response::HTTP_NOT_FOUND);
+  }
 
+
+  $existingFilmHistory = $user->getMovieHistories()->filter(function($history) use ($film) {
+      return $history->getMovie() === $film;
+  });
+
+  if ($existingFilmHistory->count() > 0) {
+      return new JsonResponse(['message' => 'Film déjà présent dans l\'historique'], Response::HTTP_OK);
+  }
+
+  $filmHistory = new MovieHistory();
+  $filmHistory->setUser($user);
+  $filmHistory->setMovie($film);
+
+  $entityManager->persist($filmHistory);
+  $entityManager->flush();
+
+  return new JsonResponse(['message' => 'Film est ajouté à l\'historique'], Response::HTTP_CREATED);
+}
     #[Route('/api/user/delhistory', name: 'app_api_user_test')]
     public function DellHisotry(UserRepository $userRepository, MovieHistoryRepository $filmHistoryRepository ,  EntityManagerInterface $entityManager , Request $request ): Response
     {

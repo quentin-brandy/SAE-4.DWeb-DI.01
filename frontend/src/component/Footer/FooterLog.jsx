@@ -1,6 +1,6 @@
 export default function FooterLog() {
     return (
-      <footer class=" absolute w-full bottom-0 text-textgrey">
+      <footer class="bg-textwhite w-full bottom-0 text-textgrey">
         <div class="gap-4 flex flex-col justify-center items-center pt-3 lg:hidden lg:opacity-0 mb-10">
         <img src='/img/cbslogogrey.svg' alt="logo cbs"/>
         <div>
