@@ -20,12 +20,12 @@ export default function CardEp({ img, name, seen }) {
   return (
     <Link onClick={handleserie} to={`/${name}`}>
       <>
-        <li className="mb-0 cursor-pointer hover:scale-110">
+        <li className="mb-0 cursor-pointer hover:scale-110 hover:transition-transform hover:duration-300">
           {seen === true && (
             <img className="absolute h-6 w-6" src="/img/checkmark.svg" alt="" />
           )}
           <img
-            className="min-h-20 max-w-40 md:max-w-40 xl:max-w-48"
+            className="min-h-20 max-w-40 md:max-w-40 xl:max-w-48 "
             src={img}
             alt=""
           />

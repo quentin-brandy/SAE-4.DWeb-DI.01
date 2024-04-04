@@ -104,7 +104,7 @@ export default function UpdatePassword({password}) {
                 htmlFor="oldpassword"
                 className={`pointer-events-none absolute pl-4 text-background opacity-70 ${
                   formData.oldpassword !== ""
-                    ? "-top-1 text-xs transition-all duration-300 ease-in-out"
+                    ? "-top-1  mt-2 text-xs transition-all duration-300 ease-in-out"
                     : ""
                 }`}
               >
@@ -133,7 +133,7 @@ export default function UpdatePassword({password}) {
                 htmlFor="password"
                 className={`pointer-events-none absolute pl-4 text-background opacity-70 ${
                   formData.password !== ""
-                    ? "-top-1 text-xs transition-all duration-300 ease-in-out"
+                    ? "-top-1  mt-2 text-xs transition-all duration-300 ease-in-out"
                     : ""
                 }`}
               >
@@ -165,7 +165,7 @@ export default function UpdatePassword({password}) {
                 htmlFor="password"
                 className={`pointer-events-none absolute pl-4 text-background opacity-70 ${
                   formData.password !== ""
-                    ? "-top-1 text-xs transition-all duration-300 ease-in-out"
+                    ? "-top-1  mt-2 text-xs transition-all duration-300 ease-in-out"
                     : ""
                 }`}
               >

@@ -18,9 +18,9 @@ export default function SearchBarCard(item) {
   return (
     <Link onClick={handleserie} to={`/${item.name}`} class="relative">
        {item.Seen === true && (
-            <img className="absolute h-6 w-6" src="/img/checkmark.svg" alt="" />
+            <img className="absolute h-6 w-6 hover:scale-110 hover:transition-transform hover:duration-300" src="/img/checkmark.svg" alt="" />
           )}
-      <img class="block" src={item.horizontal_url} alt={item.name} />
+      <img className="block" src={item.horizontal_url} alt={item.name} />
     </Link>
   );
 }

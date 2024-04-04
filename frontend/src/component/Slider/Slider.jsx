@@ -40,7 +40,7 @@ export default function Sliders(data) {
     <div className="relative h-full pl-5 md:pl-10 xl:pl-24">
       <ul
         ref={containerRef}
-        className="bg-neutral rounded-box flex h-full snap-x gap-4 overflow-x-hidden overflow-y-hidden"
+        className="bg-transparent rounded-box flex h-full snap-x gap-4 overflow-x-hidden overflow-y-hidden"
       >
         <div
           onClick={handleScrollLeft}

@@ -16,12 +16,12 @@ export default function CardCategory({ title, image , seen}) {
       });
   };
   return (
-    <article className=" col-span-6 mb-0 w-full cursor-pointer hover:scale-110 md:col-span-4 lg:col-span-3 xl:col-span-2">
+    <article className=" col-span-6 mb-0 w-full cursor-pointer  hover:scale-110 hover:transition-transform hover:duration-300 md:col-span-4 lg:col-span-3 xl:col-span-2">
       <Link onClick={handleserie} to={`/${title}`}>
       {seen === true && (
             <img className="absolute h-6 w-6" src="/img/checkmark.svg" alt="" />
           )}
-        <img src={image} alt="" />
+        <img className=" hover:transition-transform hover:duration-300" src={image} alt="" />
         <h4 className=" text-base text-textwhite">{title}</h4>
       </Link>
     </article>
