@@ -1,4 +1,4 @@
-import CardTrailer from "../Card/CardEp";
+import CardTrailer from "../Card/CardTrailer";
 import { useRef, useEffect, useState } from "react";
 
 export default function Sliderslast(data) {

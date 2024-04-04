@@ -1,4 +1,4 @@
-import CardEp from "../Card/CardSerie copy";
+import CardEp from "../Card/CardSerie";
 import { useRef, useEffect, useState } from "react";
 
 export default function Sliders(data) {

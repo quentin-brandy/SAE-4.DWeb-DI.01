@@ -91,15 +91,6 @@ export async function Verifyuser(userData) {
   }
 }
 
-export async function LogoutUser() {
-  let answer = await fetch(`http://localhost:8080/api/user/logout`);
-  if (answer.ok) {
-    return "ok";
-  } else {
-    return "error";
-  }
-}
-
 export async function GetUserbyToken() {
   const answer = await fetch(`http://localhost:8080/api/user`, {
     method: "GET",
@@ -113,6 +104,45 @@ export async function GetUserbyToken() {
     return "no";
   }
 }
+
+export async function ChangeEmail(userData) {
+  try {
+    const response = await fetch("http://localhost:8080/api/changemail", {
+      method: "POST",
+      body: JSON.stringify(userData),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to change email");
+    }
+
+    return response;
+  } catch (error) {
+    console.error("Error changing email", error.message);
+    throw error;
+  }
+}
+
+export async function ChangePassword(userData) {
+  try {
+    const response = await fetch("http://localhost:8080/api/changepassword", {
+      method: "POST",
+      body: JSON.stringify(userData),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to change password");
+    }
+
+    return response;
+  } catch (error) {
+    console.error("Error changing password:", error.message);
+    throw error;
+  }
+}
+
 
 export async function Updatehistory(Moviename) {
   try {

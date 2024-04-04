@@ -335,6 +335,95 @@ public function readCategoryname(Category $category, SerializerInterface $serial
     }
 
 
+    #[Route('/api/changemail', name: 'app_api_user_changeemail', methods: ['POST'])]
+public function UserMail(UserRepository $userRepository, Request $request, SerializerInterface $serializer, UserPasswordHasherInterface $passwordHasher, JWTTokenManagerInterface $jwtManager, EntityManagerInterface $entityManager): Response
+{
+
+    $token = $request->cookies->get('jwt_token');
+
+    // Vérifier que le cookie existe
+    if (!$token) {
+        return new JsonResponse(['error' => 'JWT cookie not found'], Response::HTTP_UNAUTHORIZED);
+    }
+
+    $tokenParts = explode(".", $token);
+    $tokenPayload = base64_decode($tokenParts[1]);
+    $jwtPayload = json_decode($tokenPayload);
+    $useremail = $jwtPayload->username;
+
+    $user = $userRepository->findOneBy(['email' => $useremail]);
+
+    if (!$user) {
+        return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+    }
+
+    $requestData = json_decode($request->getContent(), true);
+    $providedPassword = $requestData['password'];
+
+    if (!$passwordHasher->isPasswordValid($user, $providedPassword)) {
+        return new JsonResponse(['error' => 'Invalid password'], Response::HTTP_UNAUTHORIZED);
+    }
+
+    $newEmail = $requestData['email'];
+    $user->setEmail($newEmail);
+
+    
+    $entityManager->flush();
+
+   
+    $user = $userRepository->findOneBy(['email' => $newEmail]);
+
+    
+    $token = $jwtManager->create($user);
+    $cookie = new Cookie('jwt_token', $token, strtotime('+1 day'), '/', null, false, false);
+
+    // Crée une réponse vide avec le cookie attaché
+    $response = new Response();
+    $response->headers->setCookie($cookie);
+
+    return $response;
+}
+
+
+#[Route('/api/changepassword', name: 'app_api_user_changepassword', methods: ['POST'])]
+public function UserPassword(UserRepository $userRepository, Request $request, SerializerInterface $serializer, UserPasswordHasherInterface $passwordHasher, JWTTokenManagerInterface $jwtManager, EntityManagerInterface $entityManager): Response
+{
+
+    $token = $request->cookies->get('jwt_token');
+
+  
+    if (!$token) {
+        return new JsonResponse(['error' => 'JWT cookie not found'], Response::HTTP_UNAUTHORIZED);
+    }
+
+    $tokenParts = explode(".", $token);
+    $tokenPayload = base64_decode($tokenParts[1]);
+    $jwtPayload = json_decode($tokenPayload);
+    $useremail = $jwtPayload->username;
+
+    $user = $userRepository->findOneBy(['email' => $useremail]);
+
+    if (!$user) {
+        return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+    }
+
+    $requestData = json_decode($request->getContent(), true);
+    $providedPassword = $requestData['oldpassword'];
+
+    if (!$passwordHasher->isPasswordValid($user, $providedPassword)) {
+        return new JsonResponse(['error' => 'Invalid password'], Response::HTTP_UNAUTHORIZED);
+    }
+
+    $newPassword = $passwordHasher->hashPassword($user ,$requestData['password']);
+    $user->setPassword($newPassword);
+
+    
+    $entityManager->flush();
+
+      $response = new JsonResponse( "authentification succed" );
+      return $response;
+}
+
     #[Route('/api/user/logout', name: 'app_api_user_logout' , methods: ['GET']) ]
     public function UserLogout(): Response
     {
@@ -342,7 +431,7 @@ public function readCategoryname(Category $category, SerializerInterface $serial
 
     $cookie = new Cookie('jwt_token', "", 0, '/', null, false, false);
 
-    // Crée une réponse vide avec le cookie attaché
+    
     $response = new Response();
     $response->headers->setCookie($cookie);
 
@@ -352,12 +441,12 @@ public function readCategoryname(Category $category, SerializerInterface $serial
 
  
     #[Route('/api/user', name: 'app_api_user_verify')]
-    public function readUser(UserRepository $user , SerializerInterface $serializer ,  Request $request ): JsonResponse
+    public function Useraccount(UserRepository $user , SerializerInterface $serializer ,  Request $request ): JsonResponse
     {
 
       $token = $request->cookies->get('jwt_token');
 
-      // Vérifier que le cookie existe
+    
       if (!$token) {
           return new JsonResponse(['error' => 'JWT cookie not found'], Response::HTTP_UNAUTHORIZED);
       }
@@ -376,7 +465,6 @@ public function readCategoryname(Category $category, SerializerInterface $serial
 {
   $token = $request->cookies->get('jwt_token');
 
-  // Vérifier que le cookie existe
   if (!$token) {
       return new JsonResponse(['error' => 'JWT cookie not found'], Response::HTTP_UNAUTHORIZED);
   }

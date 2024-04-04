@@ -1,7 +1,36 @@
-export default function CardEp() {
+import { Link, useNavigate } from "react-router-dom";
+import { GetUserbyToken } from "../../libs/loaders";
+
+export default function CardEp({ img, name, seen }) {
+  const navigate = useNavigate();
+
+  const handleserie = () => {
+    let user = GetUserbyToken();
+   
+      user.then((value) => {
+        if (value == "no") {
+          navigate("/account/signin");
+        } else {
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   return (
-    <div className=" col-span-6 mb-0 min-h-80 w-full cursor-pointer hover:scale-110 md:col-span-4 lg:col-span-3 xl:col-span-2">
-      <img src="/img/fire.jpg" alt="" />
-    </div>
+    <Link onClick={handleserie} to={`/${name}`}>
+      <>
+        <li className="mb-0 cursor-pointer hover:scale-110">
+          {seen === true && (
+            <img className="absolute h-6 w-6" src="/img/checkmark.svg" alt="" />
+          )}
+          <img
+            className="min-h-20 max-w-40 md:max-w-40 xl:max-w-48"
+            src={img}
+            alt=""
+          />
+        </li>
+      </>
+    </Link>
   );
 }

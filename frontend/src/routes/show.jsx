@@ -3,7 +3,6 @@ import NavBar from "../component/NavBar/NavBar";
 import { GetUserbyToken, GetCategory } from "../libs/loaders";
 import { useLoaderData } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import Footer from "../component/Footer/Footer";
 export async function loader() {
   let Category = await GetCategory();
   let user = await GetUserbyToken();

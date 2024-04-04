@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { PlayButton } from "../Button/Button";
-import CardEp from "../Card/CardEp";
+import CardEp from "../Card/CardTrailer";
 export default function SerieBanner(data) {
   return (
     <>
