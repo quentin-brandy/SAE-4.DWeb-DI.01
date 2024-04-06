@@ -57,7 +57,7 @@ export default function SignIn() {
   return (
     <>
      {errorMessage && (
-        <div className="text-red-500 mb-4">
+        <div className=" bg-textwhite text-red-500 font-semibold text-xl flex justify-center py-4">
           {errorMessage}
         </div>
       )}

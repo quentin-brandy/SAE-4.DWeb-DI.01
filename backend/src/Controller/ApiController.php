@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 class ApiController extends AbstractController
 {
     #[Route('/api', name: 'app_api')]
@@ -136,14 +136,11 @@ class ApiController extends AbstractController
     }
 
 
-
-
     #[Route('/api/user/{email}', name: 'app_api_user' , methods: ['POST']) ]
-    public function readUser(string $email, UserRepository $userRepository , Request $request, SerializerInterface $serializer, UserPasswordHasherInterface $passwordHasher , JWTTokenManagerInterface $jwtManager): Response
+    public function readUsermdp(string $email, UserRepository $userRepository , Request $request, SerializerInterface $serializer, UserPasswordHasherInterface $passwordHasher , JWTTokenManagerInterface $jwtManager): Response
     {
       
       $user = $userRepository->findOneBy(['email' => $email]);
-      $test = $user->getPassword();
       if (!$user) {
           return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
       }
@@ -165,4 +162,20 @@ class ApiController extends AbstractController
             $response = new JsonResponse($data);
         return $response;
     }
+
+    
+    #[Route('/api/user', name: 'app_api_categories_user')]
+    public function readUser(UserRepository $user , SerializerInterface $serializer ,  Request $request ): Response
+    {
+      $token = $request->headers->get('Authorization');
+      $token = substr($token, 7);
+      $tokenParts = explode(".", $token);  
+      $tokenPayload = base64_decode($tokenParts[1]);
+      $jwtPayload = json_decode($tokenPayload);
+      $useremail = $jwtPayload->username;
+
+      $response = new JsonResponse( $useremail );
+      return $response;
+    }
+
 }

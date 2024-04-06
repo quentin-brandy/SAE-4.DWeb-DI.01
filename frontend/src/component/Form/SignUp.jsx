@@ -3,12 +3,14 @@ import { Form, useNavigate } from "react-router-dom";
 import { Createuser } from "../../libs/loaders";
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [isEmailInputClicked, setIsEmailInputClicked] = useState(false);
   const [isPasswordInputClicked, setIsPasswordInputClicked] = useState(false);
   const [isConfirmPasswordInputClicked, setIsConfirmPasswordInputClicked] = useState(false);
   const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -77,25 +79,24 @@ const handleChange = (e) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    try{
       const response = await Createuser(formData);
       if(response.ok == true){
-      useNavigate("/home");
+        navigate("/account/signin");
+      }} catch (error) {
+        console.error(error);
+        setErrorMessage('Une erreur s\'est produite lors de l\'inscription');
       }
-      else{
-        return (
-      <p className="text-xs text-red-500">
-        An error occurred during the process. Please try again.
-      </p>
-    );
       
     } 
-      console.error(error);
-      // Handle error
-    }
 
   return (
     <>
+     {errorMessage && (
+        <div className=" bg-textwhite text-red-500 font-semibold text-xl flex justify-center py-4">
+          {errorMessage}
+        </div>
+      )}
       <section className="flex justify-center items-center px-20 w-full bg-textwhite pt-10">
         <div className="max-w-96">
           <div className="flex flex-wrap gap-10 items-center pb-2 border-b-[1px] justify-between mb-10">

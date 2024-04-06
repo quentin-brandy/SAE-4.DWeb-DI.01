@@ -11,7 +11,9 @@ export default function NavBarlog() {
 
     return (
       <nav className="flex w-full justify-between px-5 py-4 bg-black">
-        <img className="text-textgrey" src='/img/cbslogo.svg' alt=""/>
+        <NavLink to="/">
+        <img className="cursor-pointer" src='/img/cbslogo.svg' alt=""/>
+        </NavLink>
         {isSignIn ? (
           <NavLink to="signup" onClick={handleNavLinkClick} className="text-textwhite text-sm hover:text-gray-500 cursor-pointer">SIGN UP</NavLink>
         ) : (

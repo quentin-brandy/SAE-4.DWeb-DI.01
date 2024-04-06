@@ -3,6 +3,18 @@ import React, { useState } from "react";
 import { NavLink } from 'react-router-dom';
 export default function NavBar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [istest, setIstest] = useState(false);
+
+   let token = cookieStore.get("token connexion")
+    .then((token) => {
+      if (token) {
+        console.log(token);
+        setIstest(true)
+      } else {
+       console.log(token);
+       setIstest(false)
+      }
+    })
 
     function Openmenu() {
       setIsMenuOpen(true);
@@ -31,15 +43,14 @@ export default function NavBar() {
         </NavLink>
         </li>
         <li className="bg-black pl-10">
-            <a className="flex items-center justify-center gap-4 py-6 bg-black border-2 px-2 hover:bg-textwhite" href="">
-            <h3 className="text-xs font-normal text-textwhite hover:text-black">SIGN UP</h3>
-        </a>
-        </li>
-        <li className='pl-10'>
-        <NavLink to="/signin" className="flex items-center justify-center gap-4 pt-4 pb-6" >
+        {istest ? (
+        <NavLink to="/account" className="text-xs w-full flex justify-center py-4 text-textwhite">PROFILE</NavLink>
+      ) : (
+        <NavLink to="/account/signin" className="flex items-center justify-center gap-4 pt-4 pb-6" >
             <h3 className="text-xs  text-textwhite">SING IN</h3>
         </NavLink>
-        </li>
+      )}
+      </li>
         <li className="flex justify-center pl-10 m-auto w-11/12 bg-background min-h-[0.5px]"></li>
         <li className='pl-10'>
         <NavLink className="flex items-center justify-center gap-4 pt-4 pb-6" to="/show">
@@ -51,7 +62,9 @@ export default function NavBar() {
     <nav className="flex w-screen py-2  mb-4 md:items-center md:gap-9 px-5 md:px-10 xl:px-24 bg-transparent">
         <div className=" flex items-start">
             <img onClick={Openmenu} className=" pb-6 w-6 md:hidden" src='/img/burgeropen.svg' alt=""/>
+            <NavLink to="/">
             <img className='cursor-pointer scale-75  md:w-24 ' src='/img/cbslogo.svg' alt=""/>
+            </NavLink>
         </div>
         {/* mobile */}
         <div className='flex justify-end w-full h-8 px-5 md:px-5 md:hidden'>
@@ -72,9 +85,11 @@ export default function NavBar() {
             </ul>
                 <ul className="hidden md:flex gap-6 mr-10 items-center">  
                     <li className="">
-                    <NavLink to="/signin" className="flex items-center justify-center gap-4">
-                    <h3 className="text-xs md:text-lg text-textwhite">SING IN</h3>
-                </NavLink>
+                    {istest ? (
+        <NavLink to="/account" className="text-xs md:text-lg  text-textwhite">PROFILE</NavLink>
+      ) : (
+        <NavLink to="/account/signin" className="text-xs md:text-lg  text-textwhite">SIGN IN</NavLink>
+      )}
                 </li>
                 <li className="flex items-center justify-center gap-4  ">     
                 <Button className=" md:text-xl font-semibold"> TRY PARAMOUNT+</Button>
