@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Resethistory } from "../../libs/loaders";
+import { LogOut, Resethistory } from "../../libs/loaders";
 import { useState } from "react";
 import  UpdateEmail from "../Form/UpdateEmail";
 import UpdatePassword from "../Form/UpdatePassword";
@@ -28,9 +28,11 @@ const Password = () => {
   }
 }
 
-  const handlelogout = () => {
-    document.cookie = 'jwt_token=; path=/; domain=localhost; expires=Thu, 01 Jan 1970 00:00:00 GMT;';
+  const handlelogout = async () =>  {
+    let data  = await LogOut();
+    if(data.ok){
     navigate("/");
+    }
   };
   const handlehistory = () => {
     let history = Resethistory(data.email);

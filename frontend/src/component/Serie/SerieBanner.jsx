@@ -7,7 +7,7 @@ export default function SerieBanner(data) {
       <div className="flex w-screen flex-col justify-end">
         <img
           className="relative aspect-video h-full max-h-[700px] min-h-[565px] w-full md:h-3/4 2xl:max-h-[900px]"
-          src={data.horizontal_url}
+          src={`./img/${data.horizontal_url}`}
           alt="ncisbanner"
         />
         <div className="bottom-90 absolute left-0 right-0 h-[10rem] w-screen bg-gradient-to-b from-transparent to-background 2xl:h-[50rem]" />

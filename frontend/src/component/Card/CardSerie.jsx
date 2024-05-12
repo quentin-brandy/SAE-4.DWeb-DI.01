@@ -26,7 +26,7 @@ export default function CardEp({ img, name, seen }) {
           )}
           <img
             className="min-h-20 max-w-40 md:max-w-40 xl:max-w-48 "
-            src={img}
+            src={`./img/${img}`}
             alt=""
           />
         </li>

@@ -325,7 +325,16 @@ public function readCategoryname(Category $category, SerializerInterface $serial
       }
     $token = $jwtManager->create($user);
 
-    $cookie = new Cookie('jwt_token', $token, strtotime('+1 day'), '/', null, false, false);
+    $cookie = new Cookie(
+    'jwt_token', // Nom du cookie
+    $token, // Valeur du cookie
+    strtotime('+1 day'), // Durée de validité
+    '/', // Chemin du cookie (valide pour tout le domaine)
+    
+    false, // Secure (true/false)
+    false, // HttpOnly (true/false)
+    'None' // SameSite (None/Lax/Strict)
+);
 
     // Crée une réponse vide avec le cookie attaché
     $response = new Response();
@@ -525,4 +534,24 @@ public function UserPassword(UserRepository $userRepository, Request $request, S
   
       return new JsonResponse(['message' => 'Film history supprimé'], Response::HTTP_OK);
     }
+
+    #[Route('/api/user/logout', name: 'app_api_user_logout' , methods: ['GET']) ]
+    public function logout( UserRepository $userRepository , Request $request, SerializerInterface $serializer, UserPasswordHasherInterface $passwordHasher , JWTTokenManagerInterface $jwtManager): Response
+    {
+        $token = $request->cookies->get('jwt_token');
+
+        if (!$token) {
+            return new JsonResponse(['error' => 'JWT cookie not found'], Response::HTTP_UNAUTHORIZED);
+        }
+        $cookie = new Cookie('jwt_token', '', time() - 3600, '/', null, false, false);
+
+        // Crée une réponse vide avec le cookie attaché
+        $response = new Response();
+        $response->headers->setCookie($cookie);
+        return $response;
+    }
+
+
+
+
 }

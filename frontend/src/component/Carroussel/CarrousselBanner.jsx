@@ -22,7 +22,7 @@ export default function CarrousselBanner(data) {
       <div className="flex w-screen flex-col justify-end ">
         <img
           className="relative aspect-video h-full max-h-[700px] min-h-[565px] w-screen brightness-75 md:h-3/4 2xl:max-h-[900px] "
-          src={data.movie.horizontal_url}
+          src={`./img/${data.movie.horizontal_url}`}
           alt={data.movie.name}
         />
         <div className="absolute bottom-0 left-0 right-0 h-[20rem] w-screen bg-gradient-to-b from-transparent to-background lg:bottom-0 2xl:h-[50rem]" />
