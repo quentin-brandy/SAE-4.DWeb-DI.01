@@ -21,7 +21,7 @@ export default function CardCategory({ title, image , seen}) {
       {seen === true && (
             <img className="absolute h-6 w-6" src="/img/checkmark.svg" alt="" />
           )}
-        <img className=" hover:transition-transform hover:duration-300" src={`./img/${image}`} alt="" />
+        <img className=" hover:transition-transform hover:duration-300" src={`/img/${image}`} alt="" />
         <h4 className=" text-base text-textwhite">{title}</h4>
       </Link>
     </article>
